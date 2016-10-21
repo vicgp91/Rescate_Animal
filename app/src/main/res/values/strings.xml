@@ -3,4 +3,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+
+    //FragmentIntro
+    //----Fragment Inicio
+    <string name="inicioText">Ayúdalos a Regresar a Casa</string>
+    <string name="loginText">Login</string>
+    <string name="registerText">Registrate</string>
 </resources>
