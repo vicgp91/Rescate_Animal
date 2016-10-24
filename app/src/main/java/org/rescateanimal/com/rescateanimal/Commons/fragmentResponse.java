@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Build;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 /**
@@ -17,7 +18,7 @@ public class fragmentResponse extends Fragment {
     public Context context;
 
     //Callback
-    fragmentCallback frgCallback;
+    public fragmentCallback frgCallback;
 
     @Override
     public void onAttach(Context context) {
@@ -34,7 +35,8 @@ public class fragmentResponse extends Fragment {
     }
 
     public interface fragmentCallback{
-        void changeScreen();
+        void changeScreen(pointerFragment pointer);
+        void setToolbar(Toolbar toolbar);
     }
 
 
