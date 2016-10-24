@@ -1,12 +1,12 @@
-package org.rescateanimal.com.rescateanimal.IntroFragments;
+package appcpanama.logicstudio.net.appcpanama.IntroFragments;
 
 import android.content.Context;
 
-import org.rescateanimal.com.rescateanimal.Commons.fragmentResponse;
-import org.rescateanimal.com.rescateanimal.Commons.pointerFragment;
-import org.rescateanimal.com.rescateanimal.IntroFragments.InitialFragments.InicioFragment;
-import org.rescateanimal.com.rescateanimal.IntroFragments.InitialFragments.LoginFragment;
-import org.rescateanimal.com.rescateanimal.IntroFragments.InitialFragments.RegisterFragment;
+import appcpanama.logicstudio.net.appcpanama.Commons.fragmentResponse;
+import appcpanama.logicstudio.net.appcpanama.Commons.pointerFragment;
+import appcpanama.logicstudio.net.appcpanama.IntroFragments.InitialFragments.InicioFragment;
+import appcpanama.logicstudio.net.appcpanama.IntroFragments.InitialFragments.LoginFragment;
+import appcpanama.logicstudio.net.appcpanama.IntroFragments.InitialFragments.RegisterFragment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.rescateanimal.com.rescateanimal.IntroFragments.InitialFragments;
+package appcpanama.logicstudio.net.appcpanama.IntroFragments.InitialFragments;
 
 
 import android.os.Bundle;
@@ -7,10 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import org.rescateanimal.com.rescateanimal.Commons.fragmentResponse;
-import org.rescateanimal.com.rescateanimal.Commons.pointerFragment;
-import org.rescateanimal.com.rescateanimal.R;
-
+import appcpanama.logicstudio.net.appcpanama.Commons.fragmentResponse;
+import appcpanama.logicstudio.net.appcpanama.Commons.pointerFragment;
+import appcpanama.logicstudio.net.appcpanama.R;
 
 public class InicioFragment extends fragmentResponse implements View.OnClickListener {
 

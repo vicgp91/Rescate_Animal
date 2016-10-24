@@ -1,14 +1,14 @@
-package org.rescateanimal.com.rescateanimal.IntroFragments;
+package appcpanama.logicstudio.net.appcpanama.IntroFragments;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.rescateanimal.com.rescateanimal.R;
+import appcpanama.logicstudio.net.appcpanama.R;
+
 
 /**
  * Created by LogicStudio on 21/10/16.
@@ -20,7 +20,10 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
     private static final int TYPE_ITEM = 1;
 
     private String mNavTitles[];
+    private String mNavSubTitles[];
     private int mIcons[];
+
+    static HomeFragment homeFragment;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,7 +54,7 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
                 backHeader.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.e("E", "LOG");
+                        homeFragment.frgCallback.callOnBackPressed();
                     }
                 });
             }
@@ -60,11 +63,21 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
 
     }
 
-    drawerAdapter() {
+    drawerAdapter(HomeFragment homeFragment) {
 
-        mNavTitles = new String[]{"Titulo 1", "Titulo 2", "Titulo 3", "Titulo 4"};
-        mIcons = new int[]{R.drawable.btn_green_background, R.drawable.btn_green_background, R.drawable.btn_green_background, R.drawable.btn_green_background};
+        mNavTitles = new String[]{"Reporta", "Aprende", "Contáctanos", "Participa"};
 
+        mNavSubTitles = new String[]{"Un animal en peligro",
+                "Sobre cómo cuidar a los animales",
+                "Para hablar con personal de rescate",
+                "De nuestras actividades"};
+
+        mIcons = new int[]{android.R.drawable.ic_dialog_map,
+                android.R.drawable.ic_dialog_map,
+                android.R.drawable.ic_dialog_map,
+                android.R.drawable.ic_dialog_map};
+
+        this.homeFragment = homeFragment;
 
     }
 
@@ -98,6 +111,7 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
         if (holder.Holderid == 1) {
 
             holder.titleItem.setText(mNavTitles[position - 1]);
+            holder.subTitleItem.setText(mNavSubTitles[position - 1]);
             holder.itemImage.setImageResource(mIcons[position - 1]);
         } else {
         }

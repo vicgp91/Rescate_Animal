@@ -1,4 +1,4 @@
-package org.rescateanimal.com.rescateanimal;
+package appcpanama.logicstudio.net.appcpanama;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,5 +1,6 @@
-package org.rescateanimal.com.rescateanimal;
+package appcpanama.logicstudio.net.appcpanama;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +8,13 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import org.rescateanimal.com.rescateanimal.Commons.SPControl;
-import org.rescateanimal.com.rescateanimal.Commons.fragmentResponse;
-import org.rescateanimal.com.rescateanimal.Commons.pointerFragment;
-import org.rescateanimal.com.rescateanimal.IntroFragments.introFragmentAdministrator;
+import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
+import appcpanama.logicstudio.net.appcpanama.Commons.fragmentResponse;
+import appcpanama.logicstudio.net.appcpanama.Commons.pointerFragment;
+import appcpanama.logicstudio.net.appcpanama.IntroFragments.HomeFragment;
+import appcpanama.logicstudio.net.appcpanama.IntroFragments.introFragmentAdministrator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IntroActivity extends AppCompatActivity {
@@ -20,7 +23,7 @@ public class IntroActivity extends AppCompatActivity {
     SPControl control;
 
     //FragmentsManagements
-    List<fragmentResponse> listfrg;
+    List<fragmentResponse> listfrg = new ArrayList<>();
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     introFragmentAdministrator frgAdministrator;
@@ -42,7 +45,10 @@ public class IntroActivity extends AppCompatActivity {
 
         frgAdministrator = new introFragmentAdministrator();
 
-        listfrg = frgAdministrator.addFragment(getApplicationContext());
+        if (!control.contains("logValue"))
+            listfrg = frgAdministrator.addFragment(getApplicationContext());
+        else
+            listfrg = frgAdministrator.addFragment(getApplicationContext(), listfrg, pointerFragment.POINTER_HOME);
 
         setFragmentCallbacks();
         changeFragment();
@@ -76,8 +82,8 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void changeScreen(pointerFragment pointer) {
                 Log.e("TAG", "CHANGE");
-                if(listfrg.size() > 1 && !control.contains("logValue"))
-                    listfrg.remove(listfrg.size()-1);
+                if (listfrg.size() > 1 && !control.contains("logValue"))
+                    listfrg.remove(listfrg.size() - 1);
 
                 prepareListFrg(pointer);
             }
@@ -85,6 +91,12 @@ public class IntroActivity extends AppCompatActivity {
             @Override
             public void setToolbar(Toolbar toolbar) {
                 setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+
+            @Override
+            public void callOnBackPressed() {
+                onBackPressed();
             }
         });
     }
@@ -92,11 +104,19 @@ public class IntroActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (listfrg.size() > 1) {
-            listfrg.remove(listfrg.size() - 1);
-            changeFragment();
+        if (listfrg.get(listfrg.size() - 1).getClass() == HomeFragment.class &&
+                ((HomeFragment) listfrg.get(listfrg.size() - 1)).isDrawerLayoutOpen()) {
+
+            ((HomeFragment) listfrg.get(listfrg.size() - 1)).closeDrawerLayout();
+
         } else {
-            super.onBackPressed();
+            if (listfrg.size() > 1) {
+                listfrg.remove(listfrg.size() - 1);
+                changeFragment();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
+
 }

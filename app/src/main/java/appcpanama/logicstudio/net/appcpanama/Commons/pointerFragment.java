@@ -1,4 +1,4 @@
-package org.rescateanimal.com.rescateanimal.Commons;
+package appcpanama.logicstudio.net.appcpanama.Commons;
 
 /**
  * Created by LogicStudio on 21/10/16.

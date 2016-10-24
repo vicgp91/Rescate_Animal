@@ -1,4 +1,4 @@
-package org.rescateanimal.com.rescateanimal.IntroFragments.InitialFragments;
+package appcpanama.logicstudio.net.appcpanama.IntroFragments.InitialFragments;
 
 
 import android.os.Bundle;
@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import org.rescateanimal.com.rescateanimal.Commons.fragmentResponse;
-import org.rescateanimal.com.rescateanimal.Commons.pointerFragment;
-import org.rescateanimal.com.rescateanimal.R;
+import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
+import appcpanama.logicstudio.net.appcpanama.Commons.fragmentResponse;
+import appcpanama.logicstudio.net.appcpanama.Commons.pointerFragment;
+import appcpanama.logicstudio.net.appcpanama.R;
 
 public class LoginFragment extends fragmentResponse {
 
+    //Clases
+    SPControl control;
 
     //Controls
     Button btnLogin,
@@ -29,7 +32,7 @@ public class LoginFragment extends fragmentResponse {
 
         if (view == null) {
             view = (ViewGroup) inflater.inflate(R.layout.login, container, false);
-
+            setRetainInstance(true);
             initInstance();
             assign();
         }
@@ -39,6 +42,9 @@ public class LoginFragment extends fragmentResponse {
     private void initInstance() {
         btnLogin = (Button) view.findViewById(R.id.btn_login_sesion);
         btnRegister = (Button) view.findViewById(R.id.btn_login_registrar);
+
+
+        control = new SPControl(context);
     }
 
 
@@ -47,6 +53,7 @@ public class LoginFragment extends fragmentResponse {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                control.setStringValue("logValue", "loginAccedido");
                 frgCallback.changeScreen(pointerFragment.POINTER_HOME);
             }
         });

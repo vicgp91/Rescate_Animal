@@ -2,8 +2,10 @@
 <resources>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorWhiteGray">#ececec</color>
+    <color name="colorBlackGray">#6e6e6e</color>
     <color name="colorPrimary">#348839</color>
     <color name="colorPrimaryDark">#215e10</color>
     <color name="colorPrimaryDarker">#1e540e</color>
     <color name="colorAccent">#fdbb00</color>
+    <color name="colorAccentDark">#efb100</color>
 </resources>

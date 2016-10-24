@@ -1,4 +1,4 @@
-package org.rescateanimal.com.rescateanimal.Commons;
+package appcpanama.logicstudio.net.appcpanama.Commons;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -37,6 +37,7 @@ public class fragmentResponse extends Fragment {
     public interface fragmentCallback{
         void changeScreen(pointerFragment pointer);
         void setToolbar(Toolbar toolbar);
+        void callOnBackPressed();
     }
 
 

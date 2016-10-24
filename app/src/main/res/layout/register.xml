@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="org.rescateanimal.com.rescateanimal.IntroFragments.InitialFragments.LoginFragment">
+    tools:context="appcpanama.logicstudio.net.appcpanama.IntroFragments.InitialFragments.RegisterFragment">
 
 
     <ImageView
