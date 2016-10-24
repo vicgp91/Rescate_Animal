@@ -41,8 +41,6 @@ public class SPControl {
 
     }
 
-
-
     public int getIntValue(String key)
     {
         return sharedPreferences.getInt(key, 0);
