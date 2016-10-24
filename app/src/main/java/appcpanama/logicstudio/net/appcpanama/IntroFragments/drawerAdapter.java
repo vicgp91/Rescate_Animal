@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import appcpanama.logicstudio.net.appcpanama.HomeScreen;
 import appcpanama.logicstudio.net.appcpanama.R;
 
 
@@ -23,7 +24,7 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
     private String mNavSubTitles[];
     private int mIcons[];
 
-    static HomeFragment homeFragment;
+    static HomeScreen homeScreen;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,7 +55,7 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
                 backHeader.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        homeFragment.frgCallback.callOnBackPressed();
+                        homeScreen.onBackPressed();
                     }
                 });
             }
@@ -63,7 +64,7 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
 
     }
 
-    drawerAdapter(HomeFragment homeFragment) {
+    public drawerAdapter(HomeScreen homeScreen) {
 
         mNavTitles = new String[]{"Reporta", "Aprende", "Contáctanos", "Participa"};
 
@@ -77,7 +78,7 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
                 android.R.drawable.ic_dialog_map,
                 android.R.drawable.ic_dialog_map};
 
-        this.homeFragment = homeFragment;
+        this.homeScreen = homeScreen;
 
     }
 

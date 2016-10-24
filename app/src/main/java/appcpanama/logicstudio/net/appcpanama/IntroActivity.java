@@ -1,32 +1,23 @@
 package appcpanama.logicstudio.net.appcpanama;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
-import appcpanama.logicstudio.net.appcpanama.Commons.fragmentResponse;
-import appcpanama.logicstudio.net.appcpanama.Commons.pointerFragment;
-import appcpanama.logicstudio.net.appcpanama.IntroFragments.HomeFragment;
-import appcpanama.logicstudio.net.appcpanama.IntroFragments.introFragmentAdministrator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class IntroActivity extends AppCompatActivity {
+public class IntroActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Variable
     SPControl control;
 
-    //FragmentsManagements
-    List<fragmentResponse> listfrg = new ArrayList<>();
-    FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
-    introFragmentAdministrator frgAdministrator;
+
+    //Controls
+    Button loginBtn,
+            registerBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,89 +25,47 @@ public class IntroActivity extends AppCompatActivity {
         setContentView(R.layout.intro_activity);
 
         initInstance();
+        assign();
     }
 
-    //INIT INSTANCE
     private void initInstance() {
 
-        control = new SPControl(getApplicationContext());
-
-        fragmentManager = getFragmentManager();
-
-        frgAdministrator = new introFragmentAdministrator();
-
-        if (!control.contains("logValue"))
-            listfrg = frgAdministrator.addFragment(getApplicationContext());
-        else
-            listfrg = frgAdministrator.addFragment(getApplicationContext(), listfrg, pointerFragment.POINTER_HOME);
-
-        setFragmentCallbacks();
-        changeFragment();
+        loginBtn = (Button) findViewById(R.id.btn_inicio_login);
+        registerBtn = (Button) findViewById(R.id.btn_inicio_register);
     }
 
+    private void assign() {
 
-    //PREPARE FOR CHANGE
-    private void prepareListFrg(pointerFragment pointer) {
-        try {
-            listfrg = frgAdministrator.addFragment(getApplicationContext(), listfrg, pointer);
-            setFragmentCallbacks();
-            changeFragment();
+        loginBtn.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
 
-        } catch (Exception e) {
-
-        }
-    }
-
-
-    //METHOD CHANGE FRAGMENT
-    private void changeFragment() {
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frmlay_intro_root, listfrg.get(listfrg.size() - 1));
-        fragmentTransaction.commit();
-    }
-
-
-    //SET CALLBACK LISTENER
-    private void setFragmentCallbacks() {
-        listfrg.get(listfrg.size() - 1).setFragmentCallbackListener(new fragmentResponse.fragmentCallback() {
-            @Override
-            public void changeScreen(pointerFragment pointer) {
-                Log.e("TAG", "CHANGE");
-                if (listfrg.size() > 1 && !control.contains("logValue"))
-                    listfrg.remove(listfrg.size() - 1);
-
-                prepareListFrg(pointer);
-            }
-
-            @Override
-            public void setToolbar(Toolbar toolbar) {
-                setSupportActionBar(toolbar);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-
-            @Override
-            public void callOnBackPressed() {
-                onBackPressed();
-            }
-        });
     }
 
 
     @Override
-    public void onBackPressed() {
-        if (listfrg.get(listfrg.size() - 1).getClass() == HomeFragment.class &&
-                ((HomeFragment) listfrg.get(listfrg.size() - 1)).isDrawerLayoutOpen()) {
+    public void onClick(View view) {
+        int idView = view.getId();
 
-            ((HomeFragment) listfrg.get(listfrg.size() - 1)).closeDrawerLayout();
+        switch (idView) {
+            case R.id.btn_inicio_login:
+                btnInicioClick();
+                break;
 
-        } else {
-            if (listfrg.size() > 1) {
-                listfrg.remove(listfrg.size() - 1);
-                changeFragment();
-            } else {
-                super.onBackPressed();
-            }
+            case R.id.btn_inicio_register:
+                btnRegisterClick();
+                break;
         }
+    }
+
+
+    private void btnInicioClick() {
+        startActivity(new Intent(IntroActivity.this, LoginScreen.class));
+        finish();
+    }
+
+    private void btnRegisterClick() {
+        startActivity(new Intent(IntroActivity.this, RegisterScreen.class));
+        finish();
     }
 
 }
