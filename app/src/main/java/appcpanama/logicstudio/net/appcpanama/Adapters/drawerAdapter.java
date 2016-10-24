@@ -1,4 +1,4 @@
-package appcpanama.logicstudio.net.appcpanama.IntroFragments;
+package appcpanama.logicstudio.net.appcpanama.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,6 +45,13 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
                 subTitleItem = (TextView) itemView.findViewById(R.id.item_drawer_subtitle);
                 itemImage = (ImageView) itemView.findViewById(R.id.item_drawer_image);
                 Holderid = 1;
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        homeScreen.clickDrawer(getLayoutPosition());
+                    }
+                });
             } else {
 
 

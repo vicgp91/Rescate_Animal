@@ -1,5 +1,7 @@
 package appcpanama.logicstudio.net.appcpanama;
 
+import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import appcpanama.logicstudio.net.appcpanama.IntroFragments.drawerAdapter;
+import appcpanama.logicstudio.net.appcpanama.Adapters.drawerAdapter;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -74,4 +76,56 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
+
+    public void clickDrawer(int position) {
+
+        Intent drawerPosition = null;
+        switch (position) {
+
+            case 1:
+
+                break;
+
+
+            case 2:
+                drawerPosition = new Intent(HomeScreen.this, InfoAnimal.class);
+                break;
+
+
+            case 3:
+
+                break;
+
+
+            case 4:
+
+                break;
+        }
+
+        startActivity(drawerPosition);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkDrawerOpen();
+            }
+        }, 300);
+
+    }
+
+    private boolean checkDrawerOpen() {
+        if (drawerLayout.isDrawerOpen(drawerList)) {
+            drawerLayout.closeDrawer(drawerList);
+
+            return true;
+        } else
+            return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (!checkDrawerOpen())
+            super.onBackPressed();
+    }
 }
