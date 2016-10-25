@@ -14,14 +14,16 @@ import appcpanama.logicstudio.net.appcpanama.R;
 
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
+    private int marginLeft = 0;
 
-    public SimpleDividerItemDecoration(Context context) {
+    public SimpleDividerItemDecoration(Context context, int marginLeft) {
         mDivider = context.getResources().getDrawable(R.drawable.line_divider);
+        this.marginLeft = marginLeft;
     }
 
     @Override
     public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-        int left = parent.getPaddingLeft();
+        int left = marginLeft + parent.getPaddingLeft();
         int right = parent.getWidth() - parent.getPaddingRight();
 
         int childCount = parent.getChildCount();

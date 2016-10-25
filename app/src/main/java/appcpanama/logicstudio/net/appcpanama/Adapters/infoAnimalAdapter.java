@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
 import java.util.List;
 
 import appcpanama.logicstudio.net.appcpanama.JavaBeans.infoAnimalBeans;
@@ -23,7 +21,7 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
         this.items = items;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView title;
         ImageView icono;
@@ -33,8 +31,17 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
 
             icono = (ImageView) v.findViewById(R.id.item_infoanimal_img);
             title = (TextView)v.findViewById(R.id.item_infoanimal_name);
+
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
+
+
 
     @Override
     public int getItemCount() {
