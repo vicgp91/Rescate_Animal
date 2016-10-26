@@ -1,6 +1,7 @@
 package appcpanama.logicstudio.net.appcpanama;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -93,7 +94,9 @@ public class HomeScreen extends AppCompatActivity {
 
 
             case 3:
-
+                String phone = "+50762297904";
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
                 break;
 
 
