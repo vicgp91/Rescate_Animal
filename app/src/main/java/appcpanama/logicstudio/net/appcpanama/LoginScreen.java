@@ -134,7 +134,7 @@ public class LoginScreen extends AppCompatActivity {
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Datos no enviados", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Credenciales Incorrectas", Toast.LENGTH_SHORT).show();
 
                     }
                 });
