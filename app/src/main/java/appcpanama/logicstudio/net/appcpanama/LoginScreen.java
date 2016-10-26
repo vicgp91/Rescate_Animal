@@ -135,6 +135,7 @@ public class LoginScreen extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Credenciales Incorrectas", Toast.LENGTH_SHORT).show();
+                        dialog.cancel();
 
                     }
                 });
