@@ -1,6 +1,7 @@
 package appcpanama.logicstudio.net.appcpanama.Adapters;
 
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import appcpanama.logicstudio.net.appcpanama.AnimalDetails;
 import appcpanama.logicstudio.net.appcpanama.JavaBeans.infoAnimalBeans;
 import appcpanama.logicstudio.net.appcpanama.R;
 
@@ -37,7 +39,7 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
 
         @Override
         public void onClick(View view) {
-
+            view.getContext().startActivity(new Intent(view.getContext(), AnimalDetails.class));
         }
     }
 
