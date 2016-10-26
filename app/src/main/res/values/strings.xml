@@ -4,6 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    //---- GOOGLE MAPS KEY
+    <string name="GOOGLE_MAP_DEVELOPER_KEY_ANDROID_LUIS">AIzaSyA9XZ3gY_kg2GV2AODLqUOUBqbm0vCSFos</string>
+    <string name="GOOGLE_MAP_DEVELOPER_KEY_ANDROID_VICENTE">AIzaSyCqLhGsEb_o-AhFYmWL5aIksrVvs-nlWYU</string>
 
     //Drawer Strings
     <string name="open_drawer">Open Drawer</string>
@@ -33,7 +36,15 @@
 
     //----Activity Info Animal
     <string name="infoADescription">Cómo cuidarlos si los encuentras</string>
+    <string name="infoBtnUbicacion">Ver Ubicación</string>
+    <string name="infoTitleComoAyu">¿Cómo ayudarlos en la calle?</string>
+    <string name="infoBtnVerMas">Más Información</string>
 
+
+    //----Activity Mapas
+    <string name="mapTitleVerUbicacion">Ubicaciones</string>
+    //---- Text Example
+    <string name="textTest">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum libero et placerat aliquet. Etiam semper augue ligula, a lacinia enim sollicitudin non. Integer eget nisl at ipsum tempus placerat. Pellentesque nec lacus dui. Cras venenatis libero sodales tellus rhoncus, nec malesuada turpis euismod. Donec vel malesuada ipsum, sit amet laoreet sapien. Duis finibus maximus est ac tempus. Fusce tincidunt, mi ac congue vulputate, ex est finibus leo, eleifend vestibulum massa ex sed massa. Aliquam posuere, magna id hendrerit ornare, velit eros molestie tortor, ac maximus felis massa vitae dui. Aliquam erat volutpat.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_activity__valida__login">Activity_Valida_Login</string>
