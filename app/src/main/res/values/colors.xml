@@ -9,4 +9,7 @@
     <color name="colorPrimaryDarker">#1e540e</color>
     <color name="colorAccent">#fdbb00</color>
     <color name="colorAccentDark">#efb100</color>
+
+    <color name="colorBlackOpacityFirst">#54000000</color>
+
 </resources>

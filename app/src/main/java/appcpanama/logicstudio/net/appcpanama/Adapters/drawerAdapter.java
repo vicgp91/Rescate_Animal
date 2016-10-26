@@ -73,17 +73,14 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
 
     public drawerAdapter(HomeScreen homeScreen) {
 
-        mNavTitles = new String[]{"Reporta", "Aprende", "Contáctanos", "Participa"};
+        mNavTitles = homeScreen.getResources().getStringArray(R.array.drawerTitle);
 
-        mNavSubTitles = new String[]{"Un animal en peligro",
-                "Sobre cómo cuidar a los animales",
-                "Para hablar con personal de rescate",
-                "De nuestras actividades"};
+        mNavSubTitles = homeScreen.getResources().getStringArray(R.array.drawerSubTitle);
 
-        mIcons = new int[]{android.R.drawable.ic_dialog_map,
-                android.R.drawable.ic_dialog_map,
-                android.R.drawable.ic_dialog_map,
-                android.R.drawable.ic_dialog_map};
+        mIcons = new int[]{R.drawable.ic_report,
+                R.drawable.ic_aprende,
+                R.drawable.ic_call,
+                R.drawable.ic_dog};
 
         this.homeScreen = homeScreen;
 

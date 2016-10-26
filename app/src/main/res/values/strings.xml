@@ -8,28 +8,31 @@
     //Drawer Strings
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
-    //FragmentIntro
-    //----Fragment Inicio
+
+    //----Activigty Intro
     <string name="inicioText">Ayúdalos a Regresar a Casa</string>
     <string name="loginText">Login</string>
     <string name="registerText">Registrate</string>
 
-    //----Fragment Login
+    //----Activity Login
     <string name="nombreLoginHint">Nombre</string>
     <string name="contraLoginHint">Contraseña</string>
     <string name="registroLoginText">¿No tienes una cuenta? Registrate</string>
 
-    //----Fragment Register
+    //----Activity Register
     <string name="nombreRegisterHint">Tu Nombre</string>
     <string name="emailRegisterHint">Tu e-mail</string>
     <string name="contraRegisterHint">Escoge una Contraseña</string>
     <string name="crearRegistroText">Crear tu Cuenta</string>
     <string name="poseeRegistroText">¿Ya tienes tu cuenta? Login</string>
 
-    //----Fragment Home
+    //----Activity Home
     <string name="homeTitle">¡Bienvenido a Rescate Animal!</string>
     <string name="homeSubTitle">Ayuda a un animal a regresar a casa y deja tu huella</string>
     <string name="homeButton">Reportar un Animal en Peligro</string>
+
+    //----Activity Info Animal
+    <string name="infoADescription">Cómo cuidarlos si los encuentras</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
