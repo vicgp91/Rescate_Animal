@@ -1,5 +1,6 @@
 package appcpanama.logicstudio.net.appcpanama;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +24,7 @@ public class InfoAnimal extends AppCompatActivity {
     //Controls
     Toolbar toolbar;
     RecyclerView rclrList;
-    RecyclerView.Adapter adapter;
+    infoAnimalAdapter adapter;
     RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -57,6 +58,13 @@ public class InfoAnimal extends AppCompatActivity {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         rclrList.addItemDecoration(new SimpleDividerItemDecoration(this, (int)metrics.density * 90));
         rclrList.setAdapter(adapter);
+
+        adapter.setCallback(new infoAnimalAdapter.AnimalInterface() {
+            @Override
+            public void clickEvent(int position) {
+                startActivity(new Intent(InfoAnimal.this, AnimalDetails.class));
+            }
+        });
     }
 
 

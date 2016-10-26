@@ -19,17 +19,23 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
 
     private List<infoAnimalBeans> items;
 
+    public AnimalInterface animalInterface;
+
     public infoAnimalAdapter(List<infoAnimalBeans> items) {
         this.items = items;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        AnimalInterface animalInterface;
+
         TextView title;
         ImageView icono;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, AnimalInterface animalInterface) {
             super(v);
+
+            this.animalInterface = animalInterface;
 
             icono = (ImageView) v.findViewById(R.id.item_infoanimal_img);
             title = (TextView)v.findViewById(R.id.item_infoanimal_name);
@@ -39,7 +45,7 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
 
         @Override
         public void onClick(View view) {
-            view.getContext().startActivity(new Intent(view.getContext(), AnimalDetails.class));
+            animalInterface.clickEvent(getAdapterPosition());
         }
     }
 
@@ -59,7 +65,7 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_infoanimal, viewGroup, false);
 
-        return new ViewHolder(v);
+        return new ViewHolder(v, animalInterface);
     }
 
     @Override
@@ -69,6 +75,15 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
             viewHolder.title.setText(items.get(i).getNombre());
 
         }
+    }
+
+
+    public interface AnimalInterface{
+        void clickEvent(int position);
+    }
+
+    public void setCallback(AnimalInterface animalInterface){
+        this.animalInterface = animalInterface;
     }
 }
 
