@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +33,7 @@ public class ReportarActivity extends AppCompatActivity {
     ImageView imgSelected;
     TextView txtSelect;
     Button selecAnimal;
+    EditText txvComoLLegar;
 
 
 
@@ -41,6 +45,10 @@ public class ReportarActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Dialog dialog = new Dialog(this);
+
+        txvComoLLegar=(EditText) findViewById(R.id.txtComoLLegar);
+        txvComoLLegar.addTextChangedListener(new MyTextWatcher(txvComoLLegar));
+
 
         imgSelected =(ImageView) findViewById(R.id.imgSelected);
         txtSelect = (TextView)findViewById(R.id.textAnimalSelected);
@@ -100,6 +108,31 @@ public class ReportarActivity extends AppCompatActivity {
                 onBackPressed();
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.txtComoLLegar:
+                    // validateName();
+                    break;
+
+            }
+        }
     }
 
 }

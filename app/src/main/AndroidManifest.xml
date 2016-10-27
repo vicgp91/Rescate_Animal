@@ -40,7 +40,10 @@
         <activity android:name=".InfoAnimal" />
         <activity android:name=".AnimalDetails" />
         <activity android:name=".MapActivity"></activity>
-        <activity android:name=".ReportarActivity"></activity>
+        <activity
+            android:name=".ReportarActivity"
+            android:theme="@style/AppThemeReporte"></activity>
+
     </application>
 
 </manifest>
