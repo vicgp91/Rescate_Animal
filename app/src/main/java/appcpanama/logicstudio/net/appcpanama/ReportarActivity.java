@@ -51,10 +51,6 @@ public class ReportarActivity extends AppCompatActivity {
                 rclrList.setAdapter(adapter);
                 dialog.show();
 
-
-
-
-
             }
         });
 

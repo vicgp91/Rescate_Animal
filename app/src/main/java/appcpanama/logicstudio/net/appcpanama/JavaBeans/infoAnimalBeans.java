@@ -7,10 +7,22 @@ package appcpanama.logicstudio.net.appcpanama.JavaBeans;
 public class infoAnimalBeans {
 
     String nombre;
+    Integer img;
 
-    public infoAnimalBeans(String nombre)
+
+    public Integer getImg() {
+        return img;
+    }
+
+    public void setImg(Integer img) {
+        this.img = img;
+    }
+
+    public infoAnimalBeans(String nombre, Integer img)
     {
         this.nombre = nombre;
+
+        this.img=img;
     }
 
     public String getNombre() {

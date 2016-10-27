@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import appcpanama.logicstudio.net.appcpanama.JavaBeans.infoAnimalBeans;
+import appcpanama.logicstudio.net.appcpanama.R;
+
 /**
  * Created by Luis González on 21/10/16.
  */
@@ -13,6 +19,7 @@ public class SPControl {
     private Context context;
     private SharedPreferences sharedPreferences;
     private String SharedStringKey = "sharedLuisKey";
+    List<infoAnimalBeans> list;
 
     public SPControl(Context context) {
         this.context = context;
@@ -49,17 +56,44 @@ public class SPControl {
 
     public Float getFloatValue(String key)
     {
-        return sharedPreferences.getFloat(key,0);
+        return sharedPreferences.getFloat(key, 0);
     }
 
     public String getStringValue(String key)
     {
-        return sharedPreferences.getString(key,"");
+        return sharedPreferences.getString(key, "");
     }
 
 
     public boolean contains(String key) {
         return sharedPreferences.contains(key);
+    }
+
+    public  List<infoAnimalBeans>  fakeData() {
+
+        list = new ArrayList<>();
+
+        list.add(new infoAnimalBeans("Perro", R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Micho" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Camaron" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Perro" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Micho", R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Camaron", R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Micho" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Camaron" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Micho" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Camaron" , R.drawable.logo_green));
+        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
+
+        return list;
+
     }
 
 
