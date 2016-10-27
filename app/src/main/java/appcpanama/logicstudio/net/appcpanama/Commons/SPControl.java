@@ -62,5 +62,10 @@ public class SPControl {
         return sharedPreferences.contains(key);
     }
 
+    public void delete(String key){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(key);
+        editor.commit();
+    }
 
 }

@@ -87,20 +87,23 @@ public class HomeScreen extends AppCompatActivity {
 
                 break;
 
-
             case 2:
+                drawerPosition = new Intent(HomeScreen.this, PerfilScreen.class);
+                break;
+
+            case 3:
                 drawerPosition = new Intent(HomeScreen.this, InfoAnimal.class);
                 break;
 
 
-            case 3:
+            case 4:
                 String phone = "+50762297904";
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                startActivity(intent);
+                drawerPosition = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+
                 break;
 
 
-            case 4:
+            case 5:
 
                 break;
         }

@@ -78,6 +78,7 @@ public class drawerAdapter extends RecyclerView.Adapter<drawerAdapter.ViewHolder
         mNavSubTitles = homeScreen.getResources().getStringArray(R.array.drawerSubTitle);
 
         mIcons = new int[]{R.drawable.ic_report,
+                R.drawable.ic_user_gray,
                 R.drawable.ic_aprende,
                 R.drawable.ic_call,
                 R.drawable.ic_dog};

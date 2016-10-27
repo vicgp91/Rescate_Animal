@@ -2,6 +2,7 @@
 <resources>
     <array name="drawerTitle">
         <item>Reporta</item>
+        <item>Perfil</item>
         <item>Aprende</item>
         <item>Contáctanos</item>
         <item>Participa</item>
@@ -9,6 +10,7 @@
 
     <array name="drawerSubTitle">
         <item>Un animal en peligro</item>
+        <item>Información del usuario</item>
         <item>Sobre cómo cuidar a los animales</item>
         <item>Para hablar con personal de rescate</item>
         <item>De nuestras actividades</item>
