@@ -99,6 +99,118 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/labelCondicion"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:text="Condición"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_condicion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:hint="¿Cómo se encuentra el animal en estos momentos?"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/txtCondicion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="left"
+                    android:textColorHint="@color/colorPrimary"
+                    android:textColor="#000000"
+                    android:inputType="textMultiLine"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <TextView
+                android:id="@+id/labelUbicacion"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:text="Ubicación"
+                />
+
+            <Button
+                android:id="@+id/btnAddUbicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:textAllCaps="false"
+                android:layout_below="@+id/contenido"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/btn_green_background"
+                android:textSize="12sp"
+                android:text="Presiona para seleccionar"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:hint="Agrega referencia de cómo llegar al lugar"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/txtComoLLegar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="left"
+                    android:textColorHint="@color/colorPrimary"
+                    android:textColor="#000000"
+                    android:inputType="textMultiLine"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+            <Button
+            android:id="@+id/btnAddFoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:textAllCaps="false"
+            android:layout_below="@+id/contenido"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_green_background"
+            android:textSize="12sp"
+            android:text="Tómale una foto"
+            />
+
+
+            <Button
+                android:id="@+id/btnreportar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:textAllCaps="false"
+                android:layout_below="@+id/contenido"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/btn_orange_background"
+                android:textSize="12sp"
+                android:text="Repórtalo"
+                />
 
         </LinearLayout>
 

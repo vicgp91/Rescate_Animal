@@ -39,10 +39,8 @@
         <activity android:name=".HomeScreen" />
         <activity android:name=".InfoAnimal" />
         <activity android:name=".AnimalDetails" />
-        <activity android:name=".MapActivity" />
-        <activity android:name=".ReportarActivity"/>
-        <activity android:name=".PerfilScreen" />
-        <activity android:name=".FinalReport"/>
+        <activity android:name=".MapActivity"></activity>
+        <activity android:name=".ReportarActivity"></activity>
     </application>
 
 </manifest>
