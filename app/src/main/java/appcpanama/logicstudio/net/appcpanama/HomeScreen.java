@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 
 import appcpanama.logicstudio.net.appcpanama.Adapters.drawerAdapter;
 
@@ -19,6 +20,7 @@ public class HomeScreen extends AppCompatActivity {
 
     //Controls
     Toolbar toolbar;
+    Button btnReportar;
     RecyclerView drawerList;
     RecyclerView.Adapter drawerAdapter;
     RecyclerView.LayoutManager drawerLayoutManager;
@@ -39,6 +41,8 @@ public class HomeScreen extends AppCompatActivity {
     private void initInstance() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        btnReportar = (Button) findViewById(R.id.btn_home_reportar);
+
         drawerList = (RecyclerView) findViewById(R.id.rclr_home_drawerlateral);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.dlay_home);
@@ -51,6 +55,13 @@ public class HomeScreen extends AppCompatActivity {
     private void assign() {
 
         setSupportActionBar(toolbar);
+
+        btnReportar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeScreen.this, FinalReport.class));
+            }
+        });
 
         drawerList.setLayoutManager(drawerLayoutManager);
         drawerList.setAdapter(drawerAdapter);

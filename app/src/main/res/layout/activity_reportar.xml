@@ -41,43 +41,40 @@
             <TextView
                 android:id="@+id/ayudalos"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contenido"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                android:layout_below="@+id/contenido"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp"
                 android:text="@string/ayudalosACasa"
-                />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tipoAnimal"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/contenido"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                android:layout_below="@+id/contenido"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp"
                 android:text="@string/dinosTipoAnimal"
-                />
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/seleccionarAnimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/contenido"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                android:textAllCaps="false"
-                android:layout_below="@+id/contenido"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/colorWhite"
                 android:background="@drawable/btn_green_background"
-                android:textSize="12sp"
                 android:text="Presiona para seleccionar"
-                />
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp" />
 
 
             <LinearLayout
@@ -89,20 +86,18 @@
                 <ImageView
                     android:id="@+id/imgSelected"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    />
+                    android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/textAnimalSelected"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp" />
 
             </LinearLayout>
-
 
 
         </LinearLayout>

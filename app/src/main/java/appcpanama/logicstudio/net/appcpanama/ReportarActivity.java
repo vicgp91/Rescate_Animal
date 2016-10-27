@@ -31,8 +31,6 @@ public class ReportarActivity extends AppCompatActivity {
     TextView txtSelect;
     Button selecAnimal;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,11 +85,6 @@ public class ReportarActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_reportar, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
