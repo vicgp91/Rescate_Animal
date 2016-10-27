@@ -85,6 +85,8 @@ public class HomeScreen extends AppCompatActivity {
 
             case 1:
 
+
+                drawerPosition = new Intent(HomeScreen.this, ReportarActivity.class);
                 break;
 
             case 2:

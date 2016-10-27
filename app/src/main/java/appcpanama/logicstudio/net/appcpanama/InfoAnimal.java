@@ -13,13 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import appcpanama.logicstudio.net.appcpanama.Adapters.infoAnimalAdapter;
+import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
 import appcpanama.logicstudio.net.appcpanama.Commons.SimpleDividerItemDecoration;
 import appcpanama.logicstudio.net.appcpanama.JavaBeans.infoAnimalBeans;
 
 public class InfoAnimal extends AppCompatActivity {
 
     //Variable
-    List<infoAnimalBeans> list;
+
 
     //Controls
     Toolbar toolbar;
@@ -40,10 +41,9 @@ public class InfoAnimal extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         rclrList = (RecyclerView) findViewById(R.id.rclr_infoanimal_list);
-
-        fakeData();
-
-        adapter = new infoAnimalAdapter(list);
+        //fakeData();
+        SPControl sp = new SPControl(InfoAnimal.this);
+        adapter = new infoAnimalAdapter(sp.fakeData());
 
         layoutManager = new LinearLayoutManager(getApplicationContext());
     }
@@ -68,30 +68,7 @@ public class InfoAnimal extends AppCompatActivity {
     }
 
 
-    private void fakeData() {
 
-        list = new ArrayList<>();
-
-        list.add(new infoAnimalBeans("Perro"));
-        list.add(new infoAnimalBeans("Gato"));
-        list.add(new infoAnimalBeans("Micho"));
-        list.add(new infoAnimalBeans("Camaron"));
-        list.add(new infoAnimalBeans("Frijoles"));
-        list.add(new infoAnimalBeans("Perro"));
-        list.add(new infoAnimalBeans("Gato"));
-        list.add(new infoAnimalBeans("Micho"));
-        list.add(new infoAnimalBeans("Camaron"));
-        list.add(new infoAnimalBeans("Frijoles"));
-        list.add(new infoAnimalBeans("Gato"));
-        list.add(new infoAnimalBeans("Micho"));
-        list.add(new infoAnimalBeans("Camaron"));
-        list.add(new infoAnimalBeans("Frijoles"));
-        list.add(new infoAnimalBeans("Gato"));
-        list.add(new infoAnimalBeans("Micho"));
-        list.add(new infoAnimalBeans("Camaron"));
-        list.add(new infoAnimalBeans("Frijoles"));
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
