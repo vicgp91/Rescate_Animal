@@ -1,6 +1,7 @@
 package appcpanama.logicstudio.net.appcpanama.Adapters;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import appcpanama.logicstudio.net.appcpanama.ReportarActivity;
 public class ListAnimalAdapter extends RecyclerView.Adapter<ListAnimalAdapter.ViewHolder> {
 
     private List<infoAnimalBeans> items;
+    private static ClickListener clickListener;
 
 
     public ListAnimalAdapter(List<infoAnimalBeans> items){
@@ -35,22 +37,16 @@ public class ListAnimalAdapter extends RecyclerView.Adapter<ListAnimalAdapter.Vi
 
         public ViewHolder(View v) {
             super(v);
-
             icono = (ImageView) v.findViewById(R.id.item_infoanimal_img);
             title = (TextView)v.findViewById(R.id.item_infoanimal_name);
-
             v.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            //view.getContext().startActivity(new Intent(view.getContext(), AnimalDetails.class));
-            Integer i = getAdapterPosition();
-
-
+            clickListener.onItemClick(getAdapterPosition(), view);
         }
     }
-
 
 
     @Override
@@ -60,7 +56,6 @@ public class ListAnimalAdapter extends RecyclerView.Adapter<ListAnimalAdapter.Vi
         } else
             return 0;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -79,6 +74,17 @@ public class ListAnimalAdapter extends RecyclerView.Adapter<ListAnimalAdapter.Vi
 
         }
     }
+
+    public void setOnItemClickListener(ClickListener clickListener) {
+        ListAnimalAdapter.clickListener = clickListener;
+    }
+
+    public interface ClickListener {
+        void onItemClick(int position, View v);
+    }
+
+
+
 }
 
 
