@@ -26,6 +26,7 @@ import appcpanama.logicstudio.net.appcpanama.Commons.SimpleDividerItemDecoration
 
 public class ReportarActivity extends AppCompatActivity {
 
+    //Controls
     Toolbar toolbar;
     RecyclerView rclrList;
     ListAnimalAdapter adapter;
@@ -33,6 +34,7 @@ public class ReportarActivity extends AppCompatActivity {
     ImageView imgSelected;
     TextView txtSelect;
     Button selecAnimal;
+    Button btnReportar;
     EditText txvComoLLegar;
 
     @Override
@@ -51,6 +53,7 @@ public class ReportarActivity extends AppCompatActivity {
         imgSelected =(ImageView) findViewById(R.id.imgSelected);
         txtSelect = (TextView)findViewById(R.id.textAnimalSelected);
         selecAnimal = (Button) findViewById(R.id.seleccionarAnimal);
+        btnReportar = (Button) findViewById(R.id.btnreportar);
 
         selecAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +89,15 @@ public class ReportarActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
 
+
+        btnReportar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ReportarActivity.this, FinalReport.class));
+                finish();
             }
         });
 

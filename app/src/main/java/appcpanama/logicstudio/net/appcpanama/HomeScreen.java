@@ -59,7 +59,7 @@ public class HomeScreen extends AppCompatActivity {
         btnReportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeScreen.this, FinalReport.class));
+                startActivity(new Intent(HomeScreen.this, ReportarActivity.class));
             }
         });
 
