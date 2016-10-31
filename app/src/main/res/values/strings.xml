@@ -29,6 +29,8 @@
     <string name="contraRegisterHint">Escoge una Contraseña</string>
     <string name="crearRegistroText">Crear tu Cuenta</string>
     <string name="poseeRegistroText">¿Ya tienes tu cuenta? Login</string>
+    <string name="dialogRegisterTitle">Información</string>
+    <string name="dialogRegisterDescription">Esta funcionalidad no se encuentra activa en estos momentos.</string>
 
     //----Activity Home
     <string name="homeTitle">¡Bienvenido Logic Studio!</string>
@@ -54,6 +56,11 @@
     <string name="perfilCerrarSesion">Cerrar Sesión</string>
 
 
+    //----Activity Reporte
+    <string name="errorTituloPermiso">Solicitud de Permiso</string>
+    <string name="errorDescCamera">Para acceder a la funcionalidad, debe asignarle permiso para utilizar la cámara.</string>
+    <string name="errorDescWrite">Para acceder a la funcionalidad, debe asignarle permiso para almacenar la foto.</string>
+
     //----Activity FinalReporte
     <string name="finalReporteTitle">Gracias por Reportar</string>
     <string name="finalReporteMessage">Personal de la Fundación\nestará acercandose a la\nubicación para rescatar\nal animal.</string>
@@ -69,6 +76,10 @@
     <string name="emailTest">Panama@logicstudio.net</string>
     <string name="huellasTest">20 Huellas</string>
     <string name="valueExampleFinalReport">1</string>
+
+
+    //----Number Contact
+    <string name="numberContact">+5073171258</string>
 
 
 

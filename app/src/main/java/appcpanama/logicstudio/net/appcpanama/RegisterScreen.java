@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import appcpanama.logicstudio.net.appcpanama.Commons.MaterialDialogClass;
+
 
 public class RegisterScreen extends AppCompatActivity {
 
     //Controls
     Button btnLogin;
+    Button btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +26,21 @@ public class RegisterScreen extends AppCompatActivity {
 
     private void initInstance() {
 
-        btnLogin = (Button)findViewById(R.id.btn_registro_login);
+        btnRegister = (Button) findViewById(R.id.btn_register_registrar);
+        btnLogin = (Button) findViewById(R.id.btn_registro_login);
     }
 
     private void assign() {
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MaterialDialogClass.createOKDialog(RegisterScreen.this,
+                        getString(R.string.dialogRegisterTitle),
+                        getString(R.string.dialogRegisterDescription));
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -40,7 +54,7 @@ public class RegisterScreen extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(RegisterScreen.this,IntroActivity.class));
+        startActivity(new Intent(RegisterScreen.this, IntroActivity.class));
         super.onBackPressed();
     }
 }

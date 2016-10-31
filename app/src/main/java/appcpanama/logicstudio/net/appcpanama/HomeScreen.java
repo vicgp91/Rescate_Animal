@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 
 import appcpanama.logicstudio.net.appcpanama.Adapters.drawerAdapter;
+import appcpanama.logicstudio.net.appcpanama.Commons.MaterialDialogClass;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -60,6 +62,7 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(HomeScreen.this, ReportarActivity.class));
+
             }
         });
 
@@ -92,6 +95,7 @@ public class HomeScreen extends AppCompatActivity {
     public void clickDrawer(int position) {
 
         Intent drawerPosition = null;
+
         switch (position) {
 
             case 1:
@@ -110,7 +114,7 @@ public class HomeScreen extends AppCompatActivity {
 
 
             case 4:
-                String phone = "+50762297904";
+                String phone = getResources().getString(R.string.numberContact);
                 drawerPosition = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
 
                 break;

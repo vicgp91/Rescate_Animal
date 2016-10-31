@@ -2,10 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="appcpanama.logicstudio.net.appcpanama">
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -38,9 +40,13 @@
         <activity android:name=".RegisterScreen" />
         <activity android:name=".HomeScreen" />
         <activity android:name=".InfoAnimal" />
+        <activity android:name=".PerfilScreen" />
         <activity android:name=".AnimalDetails" />
         <activity android:name=".MapActivity"></activity>
-        <activity android:name=".ReportarActivity"></activity>
+        <activity
+            android:name=".ReportarActivity"
+            android:theme="@style/AppThemeReporte"></activity>
+        <activity android:name=".FinalReport" />
     </application>
 
 </manifest>
