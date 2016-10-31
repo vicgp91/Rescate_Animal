@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import appcpanama.logicstudio.net.appcpanama.Adapters.ListAnimalAdapter;
 import appcpanama.logicstudio.net.appcpanama.Adapters.infoAnimalAdapter;
@@ -33,7 +36,8 @@ import appcpanama.logicstudio.net.appcpanama.Commons.MyLocationListener;
 import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
 import appcpanama.logicstudio.net.appcpanama.Commons.SimpleDividerItemDecoration;
 
-public class ReportarActivity extends AppCompatActivity {
+public class ReportarActivity extends AppCompatActivity implements LocationListener {
+
 
     //Controls
     Toolbar toolbar;
@@ -45,9 +49,12 @@ public class ReportarActivity extends AppCompatActivity {
     Button selecAnimal;
     Button btnReportar,btnAddUbicacion;
     EditText txvComoLLegar;
-    private LocationManager mlocManager;
-    private MyLocationListener mlocListener;
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+
     ProgressDialog dialogLocation;
+    Dialog dialog;
+
 
 
 
@@ -60,12 +67,10 @@ public class ReportarActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Dialog dialog = new Dialog(this);
-
+        dialog = new Dialog(this);
         txvComoLLegar=(EditText) findViewById(R.id.txtComoLLegar);
         txvComoLLegar.addTextChangedListener(new MyTextWatcher(txvComoLLegar));
         btnAddUbicacion=(Button)findViewById(R.id.btnAddUbicacion);
-
 
         imgSelected =(ImageView) findViewById(R.id.imgSelected);
         txtSelect = (TextView)findViewById(R.id.textAnimalSelected);
@@ -75,29 +80,16 @@ public class ReportarActivity extends AppCompatActivity {
         btnAddUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (ContextCompat.checkSelfPermission(ReportarActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
-
-                    mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    mlocListener = new MyLocationListener();
-                    mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, mlocListener);
-
+                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, ReportarActivity.this);
                     dialogLocation = ProgressDialog.show(ReportarActivity.this, "",
-                            "Procesando Solicitud....", true);
-
-                    mlocListener.setLocationCallback(new MyLocationListener.LocationCallback() {
-                        @Override
-                        public void locationChange(Location location) {
-                            dialogLocation.cancel();
-                        }
-                    });
-
+                            "Obteniendo ubicación....", true);
                 }
                 /*Intent intent = new Intent(ReportarActivity.this, MapActivity.class);
                 intent.putExtra("esReporte", "esReporte");
                 startActivity(intent);*/
-
             }
         });
 
@@ -187,5 +179,35 @@ public class ReportarActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        dialogLocation.cancel();
+        Toast toast1 =
+                Toast.makeText(getApplicationContext(),
+                        "Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude(), Toast.LENGTH_SHORT);
+        toast1.show();
+
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("Latitude", "disable");
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("Latitude","enable");
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("Latitude","status");
+    }
+
 
 }
