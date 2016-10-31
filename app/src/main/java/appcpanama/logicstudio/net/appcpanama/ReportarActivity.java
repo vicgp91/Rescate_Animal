@@ -1,7 +1,15 @@
 package appcpanama.logicstudio.net.appcpanama;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +29,7 @@ import android.widget.TextView;
 
 import appcpanama.logicstudio.net.appcpanama.Adapters.ListAnimalAdapter;
 import appcpanama.logicstudio.net.appcpanama.Adapters.infoAnimalAdapter;
+import appcpanama.logicstudio.net.appcpanama.Commons.MyLocationListener;
 import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
 import appcpanama.logicstudio.net.appcpanama.Commons.SimpleDividerItemDecoration;
 
@@ -34,8 +43,14 @@ public class ReportarActivity extends AppCompatActivity {
     ImageView imgSelected;
     TextView txtSelect;
     Button selecAnimal;
-    Button btnReportar;
+    Button btnReportar,btnAddUbicacion;
     EditText txvComoLLegar;
+    private LocationManager mlocManager;
+    private MyLocationListener mlocListener;
+    ProgressDialog dialogLocation;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +59,50 @@ public class ReportarActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final Dialog dialog = new Dialog(this);
 
         txvComoLLegar=(EditText) findViewById(R.id.txtComoLLegar);
         txvComoLLegar.addTextChangedListener(new MyTextWatcher(txvComoLLegar));
+        btnAddUbicacion=(Button)findViewById(R.id.btnAddUbicacion);
 
 
         imgSelected =(ImageView) findViewById(R.id.imgSelected);
         txtSelect = (TextView)findViewById(R.id.textAnimalSelected);
         selecAnimal = (Button) findViewById(R.id.seleccionarAnimal);
         btnReportar = (Button) findViewById(R.id.btnreportar);
+
+        btnAddUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (ContextCompat.checkSelfPermission(ReportarActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+                    mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    mlocListener = new MyLocationListener();
+                    mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, mlocListener);
+
+                    dialogLocation = ProgressDialog.show(ReportarActivity.this, "",
+                            "Procesando Solicitud....", true);
+
+                    mlocListener.setLocationCallback(new MyLocationListener.LocationCallback() {
+                        @Override
+                        public void locationChange(Location location) {
+                            dialogLocation.cancel();
+                        }
+                    });
+
+                }
+                /*Intent intent = new Intent(ReportarActivity.this, MapActivity.class);
+                intent.putExtra("esReporte", "esReporte");
+                startActivity(intent);*/
+
+            }
+        });
+
+
+
 
         selecAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
