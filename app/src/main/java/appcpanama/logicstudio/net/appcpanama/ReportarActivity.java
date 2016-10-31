@@ -2,12 +2,20 @@ package appcpanama.logicstudio.net.appcpanama;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +26,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -29,15 +39,18 @@ import android.widget.Toast;
 import appcpanama.logicstudio.net.appcpanama.Adapters.ListAnimalAdapter;
 import appcpanama.logicstudio.net.appcpanama.Commons.MaterialDialogClass;
 import appcpanama.logicstudio.net.appcpanama.Commons.PhotoClass;
+import appcpanama.logicstudio.net.appcpanama.Adapters.infoAnimalAdapter;
+import appcpanama.logicstudio.net.appcpanama.Commons.MyLocationListener;
 import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
 import appcpanama.logicstudio.net.appcpanama.Commons.SimpleDividerItemDecoration;
 
-public class ReportarActivity extends AppCompatActivity {
+public class ReportarActivity extends AppCompatActivity implements LocationListener {
 
 
     private final int TAKE_PHOTO_CODE = 1;
     private final int CAMERA_PERMISSION_CODE = 102;
     private final int WRITE_PERMISSION_CODE = 105;
+
     //Controls
     Toolbar toolbar;
     RecyclerView rclrList;
@@ -48,8 +61,14 @@ public class ReportarActivity extends AppCompatActivity {
     ImageView imgAnimal;
     Button selecAnimal;
     Button takePicture;
-    Button btnReportar;
+    Button btnReportar,btnAddUbicacion;
     EditText txvComoLLegar;
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+
+    ProgressDialog dialogLocation;
+    Dialog dialog;
+
 
     Uri PhotoAnimal;
 
@@ -64,7 +83,7 @@ public class ReportarActivity extends AppCompatActivity {
 
         txvComoLLegar = (EditText) findViewById(R.id.txtComoLLegar);
         txvComoLLegar.addTextChangedListener(new MyTextWatcher(txvComoLLegar));
-
+        btnAddUbicacion=(Button)findViewById(R.id.btnAddUbicacion);
 
         imgSelected = (ImageView) findViewById(R.id.imgSelected);
         txtSelect = (TextView) findViewById(R.id.textAnimalSelected);
@@ -72,6 +91,25 @@ public class ReportarActivity extends AppCompatActivity {
         selecAnimal = (Button) findViewById(R.id.seleccionarAnimal);
         takePicture = (Button) findViewById(R.id.btnAddFoto);
         btnReportar = (Button) findViewById(R.id.btnreportar);
+
+        btnAddUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(ReportarActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, ReportarActivity.this);
+                    dialogLocation = ProgressDialog.show(ReportarActivity.this, "",
+                            "Obteniendo ubicación....", true);
+                }
+                /*Intent intent = new Intent(ReportarActivity.this, MapActivity.class);
+                intent.putExtra("esReporte", "esReporte");
+                startActivity(intent);*/
+            }
+        });
+
+
+
 
         selecAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,6 +267,7 @@ public class ReportarActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
+
             case CAMERA_PERMISSION_CODE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     writePermission();
@@ -253,5 +292,35 @@ public class ReportarActivity extends AppCompatActivity {
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+
+
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        dialogLocation.cancel();
+        Toast toast1 =
+                Toast.makeText(getApplicationContext(),
+                        "Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude(), Toast.LENGTH_SHORT);
+        toast1.show();
+
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("Latitude", "disable");
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("Latitude","enable");
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("Latitude","status");
+    }
+
 
 }

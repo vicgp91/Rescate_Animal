@@ -42,7 +42,11 @@ public class AnimalDetails extends AppCompatActivity {
         btnUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AnimalDetails.this, MapActivity.class));
+
+                Intent intent = new Intent(AnimalDetails.this, MapActivity.class);
+                intent.putExtra("esReporte", "noEsReporte");
+                startActivity(intent);
+                startActivity(intent);
             }
         });
     }
