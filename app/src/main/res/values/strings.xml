@@ -89,4 +89,6 @@
     <string name="title_activity_activity__valida__login">Activity_Valida_Login</string>
     <string name="ayudalosACasa">Ayúdalos a volver a casa</string>
     <string name="dinosTipoAnimal">Dinos qué tipo de animal</string>
+    <string name="title_activity_participa">Participa</string>
+    <string name="participaHtml"></string>
 </resources>

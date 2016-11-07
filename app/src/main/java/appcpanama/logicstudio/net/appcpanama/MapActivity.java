@@ -34,7 +34,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //Map
     private supportMapFragment supportMapFragment;
     private GoogleMap mapa;
-    FloatingActionButton floatingActionButton;
+    //FloatingActionButton floatingActionButton;
     private LocationManager mlocManager;
     private MyLocationListener mlocListener;
 
@@ -52,18 +52,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void initInstance() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.sendMaps);
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+      //  floatingActionButton = (FloatingActionButton) findViewById(R.id.sendMaps);
+        /*floatingActionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-
                 Toast.makeText(MapActivity.this, "", Toast.LENGTH_LONG).show();
-
-
                 //finish();
             }
-        });
+        });*/
     }
 
     private void assign() {
