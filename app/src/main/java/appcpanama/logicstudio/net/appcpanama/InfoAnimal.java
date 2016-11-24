@@ -62,7 +62,9 @@ public class InfoAnimal extends AppCompatActivity {
         adapter.setCallback(new infoAnimalAdapter.AnimalInterface() {
             @Override
             public void clickEvent(int position) {
-                startActivity(new Intent(InfoAnimal.this, AnimalDetails.class));
+                Intent i = new Intent(InfoAnimal.this, AnimalDetails.class);
+                i.putExtra("animalSelected", String.valueOf(position));
+                startActivity(i);
             }
         });
     }

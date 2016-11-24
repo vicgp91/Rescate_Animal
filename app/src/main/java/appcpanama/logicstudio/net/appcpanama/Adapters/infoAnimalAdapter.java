@@ -73,6 +73,7 @@ public class infoAnimalAdapter extends RecyclerView.Adapter<infoAnimalAdapter.Vi
         if (items != null) {
 
             viewHolder.title.setText(items.get(i).getNombre());
+            viewHolder.icono.setImageResource(items.get(i).getImg());
 
         }
     }

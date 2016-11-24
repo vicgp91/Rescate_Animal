@@ -9,6 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
 
 public class AnimalDetails extends AppCompatActivity {
 
@@ -17,11 +20,13 @@ public class AnimalDetails extends AppCompatActivity {
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbar;
     Button btnUbicacion;
+    ImageView imagenMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animal_details);
+        imagenMenu=(ImageView)findViewById(R.id.imagen_menu);
 
         initInstance();
         assign();
@@ -31,10 +36,19 @@ public class AnimalDetails extends AppCompatActivity {
         root = (CoordinatorLayout) findViewById(R.id.animaldetails_root);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
+
+        Intent intent = getIntent();
+
+        String animalSelected = intent.getStringExtra("animalSelected");
+
         btnUbicacion = (Button) findViewById(R.id.btn_animaldetails_ubicacion);
+        SPControl sp = new SPControl(AnimalDetails.this);
+        imagenMenu.setImageResource(sp.fakeData().get(Integer.parseInt(animalSelected)).getImgMenu());
+
+
     }
 
-    private void assign() {
+        private void assign() {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -46,7 +60,7 @@ public class AnimalDetails extends AppCompatActivity {
                 Intent intent = new Intent(AnimalDetails.this, MapActivity.class);
                 intent.putExtra("esReporte", "noEsReporte");
                 startActivity(intent);
-                startActivity(intent);
+               // startActivity(intent);
             }
         });
     }

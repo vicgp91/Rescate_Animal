@@ -73,25 +73,9 @@ public class SPControl {
 
         list = new ArrayList<>();
 
-        list.add(new infoAnimalBeans("Perro", R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Micho" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Camaron" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Perro" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Micho", R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Camaron", R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Micho" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Camaron" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Gato" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Micho" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Camaron" , R.drawable.logo_green));
-        list.add(new infoAnimalBeans("Frijoles" , R.drawable.logo_green));
-
+        list.add(new infoAnimalBeans("Perezoso de 2 dedos    ", R.drawable.peresozo2_dedos, R.drawable.peresoz2_dedos_menu));
+        list.add(new infoAnimalBeans("Perezoso de 3 dedos    " , R.drawable.peresozo3_dedos, R.drawable.peresozo3_dedos_menu));
+        list.add(new infoAnimalBeans("Jaguar" , R.drawable.jaguar, R.drawable.jaguar_menu));
         return list;
 
     }
