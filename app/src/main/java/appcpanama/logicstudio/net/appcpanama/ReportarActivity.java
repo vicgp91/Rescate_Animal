@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import appcpanama.logicstudio.net.appcpanama.Adapters.CondicionAnimalAdapter;
 import appcpanama.logicstudio.net.appcpanama.Adapters.ListAnimalAdapter;
 import appcpanama.logicstudio.net.appcpanama.Commons.MaterialDialogClass;
 import appcpanama.logicstudio.net.appcpanama.Commons.PhotoClass;
@@ -58,11 +59,12 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     Toolbar toolbar;
     RecyclerView rclrList;
     ListAnimalAdapter adapter;
+    CondicionAnimalAdapter adapaterCondicion;
     RecyclerView.LayoutManager layoutManager;
     ImageView imgSelected;
-    TextView txtSelect;
+    TextView txtSelect, textCondicionSelected;
     ImageView imgAnimal;
-    Button selecAnimal;
+    Button selecAnimal, btnCondicion;
     Button takePicture;
     EditText txtCondicion;
     Button btnReportar,btnAddUbicacion;
@@ -91,8 +93,11 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
         imgSelected = (ImageView) findViewById(R.id.imgSelected);
         txtSelect = (TextView) findViewById(R.id.textAnimalSelected);
+
+        textCondicionSelected=(TextView) findViewById(R.id.textCondicionSelected);
         imgAnimal = (ImageView) findViewById(R.id.img_reportar_photo);
         selecAnimal = (Button) findViewById(R.id.seleccionarAnimal);
+        btnCondicion=(Button)findViewById(R.id.btnTipoCondicion);
         takePicture = (Button) findViewById(R.id.btnAddFoto);
         btnReportar = (Button) findViewById(R.id.btnreportar);
         txtCondicion = (EditText)findViewById(R.id.txtCondicion);
@@ -162,11 +167,52 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
 
 
+
+
+        btnCondicion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SPControl sp = new SPControl(ReportarActivity.this);
+
+                dialog.setTitle("Condición del Animal");
+                dialog.setCancelable(true);
+                dialog.setContentView(R.layout.animal_list);
+                rclrList = (RecyclerView) dialog.findViewById(R.id.rclr_infoanimal_list);
+
+                adapaterCondicion = new CondicionAnimalAdapter(sp.fakeDataCondicion());
+                layoutManager = new LinearLayoutManager(getApplicationContext());
+                rclrList.setLayoutManager(layoutManager);
+                DisplayMetrics metrics = getResources().getDisplayMetrics();
+                rclrList.addItemDecoration(new SimpleDividerItemDecoration(ReportarActivity.this, (int) metrics.density * 90));
+                rclrList.setAdapter(adapaterCondicion);
+                dialog.show();
+
+                adapaterCondicion.setOnItemClickListener(new CondicionAnimalAdapter.ClickListener() {
+                    @Override
+                    public void onItemClick(int position, View v) {
+
+                        SPControl sp = new SPControl(ReportarActivity.this);
+                        String texto;
+                        Integer img;
+                        texto = sp.fakeDataCondicion().get(position).getNombre();
+                       // img = sp.fakeData().get(position).getImg();
+                       // imgSelected.setImageResource(img);
+                        textCondicionSelected.setText(texto);
+                        textCondicionSelected.setTextColor(Color.parseColor("#348839"));
+                        btnCondicion.setText("Presiona para cambiar");
+                        dialog.cancel();
+                    }
+                });
+
+            }
+        });
+
+
         btnReportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!validaTipoAnimal() ||  !validaCondicion()  || !validaReferencia()){
+                if(!validaTipoAnimal() || !validaCondicionAnimal() ||  !validaCondicion()  || !validaReferencia()){
 
                 }else{
                     startActivity(new Intent(ReportarActivity.this, FinalReport.class));
@@ -222,6 +268,25 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             return true;
         }
     }
+
+    private boolean validaCondicionAnimal(){
+        if(textCondicionSelected.getText().toString().equalsIgnoreCase("")){
+
+            btnCondicion.setError("Selecciona tipo de animal");
+
+            textCondicionSelected.setText("Selecciona una condicion");
+            textCondicionSelected.setTextColor(Color.parseColor("#B71C1C"));
+
+            return false;
+        }else{
+            ///  input_layout_tipoAnimal.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+
+
+
 
     private boolean validaCondicion() {
         if (txtCondicion.getText().toString().trim().isEmpty()) {

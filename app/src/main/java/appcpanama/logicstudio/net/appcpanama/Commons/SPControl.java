@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import java.util.ArrayList;
 import java.util.List;
 
+import appcpanama.logicstudio.net.appcpanama.JavaBeans.CondicionAnimalBeans;
 import appcpanama.logicstudio.net.appcpanama.JavaBeans.infoAnimalBeans;
 import appcpanama.logicstudio.net.appcpanama.R;
 
@@ -20,6 +21,7 @@ public class SPControl {
     private SharedPreferences sharedPreferences;
     private String SharedStringKey = "sharedLuisKey";
     List<infoAnimalBeans> list;
+    List<CondicionAnimalBeans> listCondicion;
 
     public SPControl(Context context) {
         this.context = context;
@@ -56,12 +58,12 @@ public class SPControl {
 
     public Float getFloatValue(String key)
     {
-        return sharedPreferences.getFloat(key,0);
+        return sharedPreferences.getFloat(key, 0);
     }
 
     public String getStringValue(String key)
     {
-        return sharedPreferences.getString(key,"");
+        return sharedPreferences.getString(key, "");
     }
 
 
@@ -73,12 +75,28 @@ public class SPControl {
 
         list = new ArrayList<>();
 
-        list.add(new infoAnimalBeans("Perezoso de 2 dedos    ", R.drawable.peresozo2_dedos, R.drawable.peresoz2_dedos_menu));
-        list.add(new infoAnimalBeans("Perezoso de 3 dedos    " , R.drawable.peresozo3_dedos, R.drawable.peresozo3_dedos_menu));
+        list.add(new infoAnimalBeans("Perezoso de 2 dedos", R.drawable.peresozo2_dedos, R.drawable.peresoz2_dedos_menu));
+        list.add(new infoAnimalBeans("Perezoso de 3 dedos" , R.drawable.peresozo3_dedos, R.drawable.peresozo3_dedos_menu));
         list.add(new infoAnimalBeans("Jaguar" , R.drawable.jaguar, R.drawable.jaguar_menu));
         return list;
 
     }
+
+
+    public  List<CondicionAnimalBeans>  fakeDataCondicion() {
+
+        listCondicion = new ArrayList<>();
+
+        listCondicion.add(new CondicionAnimalBeans("Intentan cruzar la calle"));
+        listCondicion.add(new CondicionAnimalBeans("Atropellados"));
+        listCondicion.add(new CondicionAnimalBeans("Perdidos" ));
+        listCondicion.add(new CondicionAnimalBeans("Otros"));
+        return listCondicion;
+
+    }
+
+
+
 
     public void delete(String key){
         SharedPreferences.Editor editor = sharedPreferences.edit();
