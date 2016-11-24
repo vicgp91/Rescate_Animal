@@ -12,5 +12,6 @@
     <color name="colorAccentDark">#efb100</color>
 
     <color name="colorBlackOpacityFirst">#68000000</color>
+    <color name="colorRed">#B71C1C</color>
 
 </resources>

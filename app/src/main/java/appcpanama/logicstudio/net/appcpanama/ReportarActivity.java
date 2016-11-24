@@ -6,9 +6,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.content.pm.PackageManager;
@@ -30,6 +32,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,6 +64,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     ImageView imgAnimal;
     Button selecAnimal;
     Button takePicture;
+    EditText txtCondicion;
     Button btnReportar,btnAddUbicacion;
     EditText txvComoLLegar;
     protected LocationManager locationManager;
@@ -68,6 +72,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
     ProgressDialog dialogLocation;
     Dialog dialog;
+    private TextInputLayout inputLayoutCondicion,inputLayoutComoLLegar, input_layout_tipoAnimal ;
 
 
     Uri PhotoAnimal;
@@ -82,7 +87,6 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         final Dialog dialog = new Dialog(this);
 
         txvComoLLegar = (EditText) findViewById(R.id.txtComoLLegar);
-        txvComoLLegar.addTextChangedListener(new MyTextWatcher(txvComoLLegar));
         btnAddUbicacion=(Button)findViewById(R.id.btnAddUbicacion);
 
         imgSelected = (ImageView) findViewById(R.id.imgSelected);
@@ -91,6 +95,12 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         selecAnimal = (Button) findViewById(R.id.seleccionarAnimal);
         takePicture = (Button) findViewById(R.id.btnAddFoto);
         btnReportar = (Button) findViewById(R.id.btnreportar);
+        txtCondicion = (EditText)findViewById(R.id.txtCondicion);
+
+        inputLayoutCondicion= (TextInputLayout) findViewById(R.id.input_layout_condicion);
+
+        inputLayoutComoLLegar=(TextInputLayout) findViewById(R.id.input_layout_referencia);
+
 
         btnAddUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +150,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                         img = sp.fakeData().get(position).getImg();
                         imgSelected.setImageResource(img);
                         txtSelect.setText(texto);
+                        txtSelect.setTextColor(Color.parseColor("#348839"));
                         selecAnimal.setText("Presiona para cambiar");
                         dialog.cancel();
                     }
@@ -149,11 +160,20 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         });
 
 
+
+
         btnReportar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ReportarActivity.this, FinalReport.class));
-                finish();
+
+                if(!validaTipoAnimal() ||  !validaCondicion()  || !validaReferencia()){
+
+                }else{
+                    startActivity(new Intent(ReportarActivity.this, FinalReport.class));
+                    finish();
+                }
+
+
             }
         });
 
@@ -182,30 +202,52 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         return super.onOptionsItemSelected(menuItem);
     }
 
-
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.txtComoLLegar:
-                    // validateName();
-                    break;
-
-            }
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
+
+    private boolean validaTipoAnimal(){
+        if(txtSelect.getText().toString().equalsIgnoreCase("")){
+
+            selecAnimal.setError("Selecciona tipo de animal");
+
+            txtSelect.setText("Debes seleccionar un animal");
+            txtSelect.setTextColor(Color.parseColor("#B71C1C"));
+
+            return false;
+        }else{
+          ///  input_layout_tipoAnimal.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validaCondicion() {
+        if (txtCondicion.getText().toString().trim().isEmpty()) {
+            txtCondicion.setError("Completa este campo");
+            requestFocus(txtCondicion);
+            return false;
+        } else {
+            inputLayoutCondicion.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+
+    private boolean validaReferencia() {
+        if (txvComoLLegar.getText().toString().trim().isEmpty()) {
+            txvComoLLegar.setError("Agrega una referencia");
+            requestFocus(txvComoLLegar);
+            return false;
+        } else {
+            inputLayoutComoLLegar.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
 
 
     //CALL CAMERA

@@ -63,6 +63,12 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp" />
 
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_tipoAnimal"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content">
             <Button
                 android:id="@+id/seleccionarAnimal"
                 android:layout_width="match_parent"
@@ -76,7 +82,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="12sp" />
-
+</android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -158,7 +164,7 @@
                 android:textSize="12sp" />
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_name"
+                android:id="@+id/input_layout_referencia"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="16dp"
                 android:layout_height="wrap_content">
