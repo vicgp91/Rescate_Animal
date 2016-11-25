@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
 
@@ -19,8 +21,10 @@ public class AnimalDetails extends AppCompatActivity {
     CoordinatorLayout root;
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbar;
-    Button btnUbicacion;
+    //Button btnUbicacion;
     ImageView imagenMenu;
+    TextView tittuloBarra, subTituloBarra;
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +41,22 @@ public class AnimalDetails extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsingToolbarLayout);
 
+        tittuloBarra = (TextView)findViewById(R.id.tittuloBarra);
+        subTituloBarra=(TextView)findViewById(R.id.subTituloBarra);
+
+
         Intent intent = getIntent();
 
         String animalSelected = intent.getStringExtra("animalSelected");
 
-        btnUbicacion = (Button) findViewById(R.id.btn_animaldetails_ubicacion);
+        //btnUbicacion = (Button) findViewById(R.id.btn_animaldetails_ubicacion);
         SPControl sp = new SPControl(AnimalDetails.this);
         imagenMenu.setImageResource(sp.fakeData().get(Integer.parseInt(animalSelected)).getImgMenu());
+        tittuloBarra.setText(sp.fakeData().get(Integer.parseInt(animalSelected)).getNombre());
+        subTituloBarra.setText(sp.fakeData().get(Integer.parseInt(animalSelected)).getNombreCientifico());
+
+        webView = (WebView) findViewById(R.id.webViewMasInfoAnimal);
+        webView.loadUrl(sp.fakeData().get(Integer.parseInt(animalSelected)).getRutaHtml());
 
 
     }
@@ -53,7 +66,7 @@ public class AnimalDetails extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        btnUbicacion.setOnClickListener(new View.OnClickListener() {
+        /*btnUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -62,7 +75,7 @@ public class AnimalDetails extends AppCompatActivity {
                 startActivity(intent);
                // startActivity(intent);
             }
-        });
+        });*/
     }
 
 

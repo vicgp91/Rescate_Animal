@@ -45,6 +45,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
+                    android:id="@+id/tittuloBarra"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:text="@string/app_name"
@@ -53,6 +54,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/subTituloBarra"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -76,30 +78,42 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:orientation="vertical">
 
-            <TextView
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <WebView
+                    android:id="@+id/webViewMasInfoAnimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </RelativeLayout>
+
+
+
+           <!-- <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/textTest"
                 android:textColor="@color/colorBlack"
-                android:textSize="15sp" />
+                android:textSize="15sp" />-->
 
 
-            <Button
+           <!-- <Button
                 android:id="@+id/btn_animaldetails_ubicacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/btn_green_background"
                 android:text="@string/infoBtnUbicacion"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite" />-->
 
 
-            <TextView
+           <!-- <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -115,7 +129,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/textTest"
                 android:textColor="@color/colorBlack"
-                android:textSize="15sp" />
+                android:textSize="15sp" />-->
 
 
             <Button
@@ -124,6 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/btn_green_background"
                 android:text="@string/infoBtnVerMas"
                 android:textColor="@color/colorWhite" />
