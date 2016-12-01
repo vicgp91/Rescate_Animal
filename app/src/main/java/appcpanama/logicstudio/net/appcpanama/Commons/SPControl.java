@@ -76,7 +76,7 @@ public class SPControl {
         list = new ArrayList<>();
 
         list.add(new infoAnimalBeans("Perezoso de 2 dedos", R.drawable.peresozo2_dedos, R.drawable.peresoz2_dedos_menu, "Choloepus/Megalonychidae", "file:///android_asset/peresozo2dedos.html"));
-        list.add(new infoAnimalBeans("Perezoso de 3 dedos" , R.drawable.peresozo3_dedos, R.drawable.peresozo3_dedos_menu, "Bradypus/Bradypodidae", "file:///android_asset/peresozo2dedos.html"));
+        list.add(new infoAnimalBeans("Perezoso de 3 dedos" , R.drawable.peresozo3_dedos, R.drawable.peresozo3_dedos_menu, "Bradypus/Bradypodidae", "file:///android_asset/peresozo3dedos.html"));
         list.add(new infoAnimalBeans("Jaguar" , R.drawable.jaguar, R.drawable.jaguar_menu, "Panthera onca", "file:///android_asset/peresozo2dedos.html"));
         return list;
 
