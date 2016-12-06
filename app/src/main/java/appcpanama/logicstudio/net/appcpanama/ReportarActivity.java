@@ -284,10 +284,6 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         }
     }
 
-
-
-
-
     private boolean validaCondicion() {
         if (txtCondicion.getText().toString().trim().isEmpty()) {
             txtCondicion.setError("Completa este campo");
@@ -299,7 +295,6 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
         return true;
     }
-
 
     private boolean validaReferencia() {
         if (txvComoLLegar.getText().toString().trim().isEmpty()) {
@@ -399,9 +394,6 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-
-
 
     @Override
     public void onLocationChanged(Location location) {
