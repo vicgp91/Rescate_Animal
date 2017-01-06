@@ -1,13 +1,16 @@
 package appcpanama.logicstudio.net.appcpanama;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
@@ -39,6 +42,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
+
 import appcpanama.logicstudio.net.appcpanama.Adapters.CondicionAnimalAdapter;
 import appcpanama.logicstudio.net.appcpanama.Adapters.ListAnimalAdapter;
 import appcpanama.logicstudio.net.appcpanama.Commons.MaterialDialogClass;
@@ -57,6 +79,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
     //Controls
     Toolbar toolbar;
+    ProgressDialog progressDialog;
     RecyclerView rclrList;
     ListAnimalAdapter adapter;
     CondicionAnimalAdapter adapaterCondicion;
@@ -78,6 +101,12 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
 
     Uri PhotoAnimal;
+
+
+    String nombre="android", correo="correo@android.com", telefono="999-9999", resumen="reporte desde android", problema="reporte android", extencion="+507";
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +134,8 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         inputLayoutCondicion= (TextInputLayout) findViewById(R.id.input_layout_condicion);
 
         inputLayoutComoLLegar=(TextInputLayout) findViewById(R.id.input_layout_referencia);
+
+
 
 
         btnAddUbicacion.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +186,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                         img = sp.fakeData().get(position).getImg();
                         imgSelected.setImageResource(img);
                         txtSelect.setText(texto);
+                        resumen="Reporte de un "+texto;
                         txtSelect.setTextColor(Color.parseColor("#348839"));
                         selecAnimal.setText("Presiona para cambiar");
                         dialog.cancel();
@@ -195,6 +227,10 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                         String texto;
                         Integer img;
                         texto = sp.fakeDataCondicion().get(position).getNombre();
+
+                        problema = "\nEl animal reportado se encuentra en la siguiente condicion: "+texto;
+
+
                        // img = sp.fakeData().get(position).getImg();
                        // imgSelected.setImageResource(img);
                         textCondicionSelected.setText(texto);
@@ -212,12 +248,16 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             @Override
             public void onClick(View v) {
 
-                if(!validaTipoAnimal() || !validaCondicionAnimal() ||  !validaCondicion()  || !validaReferencia()){
+                //if(!validaTipoAnimal() || !validaCondicionAnimal() ||  !validaCondicion()  || !validaReferencia()){
 
-                }else{
-                    startActivity(new Intent(ReportarActivity.this, FinalReport.class));
-                    finish();
-                }
+                //}else{
+
+                    progressDialog = ProgressDialog.show(ReportarActivity.this, "",
+                            "Procesando Solicitud....", true);
+                    new EnviarDatos(ReportarActivity.this).execute();
+                   // startActivity(new Intent(ReportarActivity.this, FinalReport.class));
+                   // finish();
+               // }
 
 
             }
@@ -420,6 +460,107 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("Latitude","status");
     }
+
+
+
+
+
+
+
+
+    //Metodo de envio de formulario
+
+
+    class EnviarDatos extends AsyncTask<String,String,String> {
+        private Activity context;
+        EnviarDatos(Activity contex){
+            this.context=contex;
+        }
+
+        @Override
+        protected  String doInBackground(String... params){
+            if(registroReporte()){
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Datos enviados correctamente", Toast.LENGTH_SHORT).show();
+                        progressDialog.cancel();
+
+                    }
+                });
+            }
+            else{
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Datos no enviados", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+
+
+
+            return null;
+        }
+
+    }
+
+
+
+    public Boolean registroReporte(){
+        try {
+
+
+            problema="\nMas informacion acerca de la condicion: "+txtCondicion.getText().toString();
+
+            problema = problema +  "\nLa informacion detallada para llegar es: "+ txvComoLLegar.getText().toString();
+
+
+
+               URL url = new URL("http://192.168.3.24:81/apiOs/generarTicket.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                 //conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+               conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+                conn.setDoInput(true);
+                String urlParameters = "nombre=" + nombre + "&correo=" + correo + "&telefono=" + telefono + "&resumen=" + resumen + "&problema=" + problema + "&extencion=" + extencion + "&sitio=Android App"+ "";
+                conn.setDoOutput(true);
+
+                DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+                wr.writeBytes(urlParameters);
+                wr.flush();
+                 wr.close();
+                int responseCode = conn.getResponseCode();
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream()));
+
+                in.close();
+
+
+
+
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
