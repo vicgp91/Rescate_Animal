@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 public class ParticipaActivity extends AppCompatActivity {
@@ -21,7 +22,9 @@ public class ParticipaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         webView = (WebView) findViewById(R.id.webViewParticipa);
-        //webView.loadData(String.format(htmlText,text1), "text/html", "utf-8");
+
+        WebSettings settings = webView.getSettings();
+        settings.setDefaultTextEncodingName("utf-8");
         webView.loadUrl("file:///android_asset/participa.html");
 
     }

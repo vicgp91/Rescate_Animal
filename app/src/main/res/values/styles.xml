@@ -22,6 +22,10 @@
         <item name="colorControlActivated">@color/colorWhite</item>
     </style>
 
+    <style name="TextAppearance.Rescate.Title.Expanded" parent="android:TextAppearance">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">23sp</item>
+    </style>
 
     <style name="AppThemeReporte" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -30,5 +34,9 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

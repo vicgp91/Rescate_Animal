@@ -3,15 +3,25 @@ package appcpanama.logicstudio.net.appcpanama;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +39,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Log;
@@ -39,16 +50,29 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -70,13 +94,25 @@ import appcpanama.logicstudio.net.appcpanama.Commons.MyLocationListener;
 import appcpanama.logicstudio.net.appcpanama.Commons.SPControl;
 import appcpanama.logicstudio.net.appcpanama.Commons.SimpleDividerItemDecoration;
 
-public class ReportarActivity extends AppCompatActivity implements LocationListener {
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.api.services.urlshortener.Urlshortener;
+
+public class ReportarActivity extends AppCompatActivity implements LocationListener, OnMapReadyCallback {
 
 
+    private final int PERMISSION_ACCESS_COARSE_LOCATION = 8;
     private final int TAKE_PHOTO_CODE = 1;
     private final int CAMERA_PERMISSION_CODE = 102;
     private final int WRITE_PERMISSION_CODE = 105;
-
+    Handler handler;
+    double latitude;
+    double longitude;
+    Location location;
     //Controls
     Toolbar toolbar;
     ProgressDialog progressDialog;
@@ -90,23 +126,117 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     Button selecAnimal, btnCondicion;
     Button takePicture;
     EditText txtCondicion;
-    Button btnReportar,btnAddUbicacion;
+    Button btnReportar, btnAddUbicacion;
     EditText txvComoLLegar;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
-
+    SupportMapFragment mapFragment;
     ProgressDialog dialogLocation;
     Dialog dialog;
-    private TextInputLayout inputLayoutCondicion,inputLayoutComoLLegar, input_layout_tipoAnimal ;
-
-
+    private TextInputLayout inputLayoutCondicion, inputLayoutComoLLegar, input_layout_tipoAnimal;
+    TextView labelUbicacion;
+    GoogleMap map;
+    Bitmap myBitmap;
+    ImageView iv;
+    LinearLayout lmap;
+    LinearLayout lfoto;
     Uri PhotoAnimal;
+    String encoded = null;
+
+    String nombre = "android", correo = "correo@android.com", telefono = "999-9999", resumen = "reporte desde android", problema = "reporte android", extencion = "+507";
 
 
-    String nombre="android", correo="correo@android.com", telefono="999-9999", resumen="reporte desde android", problema="reporte android", extencion="+507";
+    public Runnable runLocation = new Runnable() {
+        @Override
+        public void run() {
+
+            // Toast.makeText(ReportarActivity.this, "location check" +latitude +" " + longitude, Toast.LENGTH_SHORT).show();
+
+            if (location != null) {
+                labelUbicacion.append(+latitude + " " + longitude);
 
 
+            }
+        }
+    };
 
+    @Override
+    protected void onStart() {
+        //android.os.Process.killProcess(android.os.Process.myPid());
+
+        super.onStart();
+
+
+    }
+
+
+    private void init() {
+
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+
+    public void getLocation() {
+
+
+        boolean isGPSEnabled = false;
+
+        handler = new Handler();
+
+        if (ContextCompat.checkSelfPermission(ReportarActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            lmap.setVisibility(View.VISIBLE);
+
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            // getting GPS status
+            boolean network_enabled = false;
+            isGPSEnabled = locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ReportarActivity.this);
+
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            dialogLocation = ProgressDialog.show(ReportarActivity.this, "",
+                    "Obteniendo ubicación....", true);
+
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    if (dialogLocation != null)
+                        dialogLocation.dismiss();
+                    if (location != null) {
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
+                        setmap(location);
+                    } else {
+                        Toast.makeText(ReportarActivity.this, "No se pudo obtener Ubicación", Toast.LENGTH_LONG).show();
+
+                        if (ActivityCompat.checkSelfPermission(ReportarActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(ReportarActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        locationManager.removeUpdates(ReportarActivity.this);
+
+                    }
+
+                }
+            }, 15000);
+
+
+        } else {
+            ActivityCompat.requestPermissions(ReportarActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    8);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,46 +245,36 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.ayudalosACasa);
         final Dialog dialog = new Dialog(this);
-
-        txvComoLLegar = (EditText) findViewById(R.id.txtComoLLegar);
-        btnAddUbicacion=(Button)findViewById(R.id.btnAddUbicacion);
-
+        btnAddUbicacion = (Button) findViewById(R.id.btnAddUbicacion);
         imgSelected = (ImageView) findViewById(R.id.imgSelected);
         txtSelect = (TextView) findViewById(R.id.textAnimalSelected);
-
-        textCondicionSelected=(TextView) findViewById(R.id.textCondicionSelected);
+        textCondicionSelected = (TextView) findViewById(R.id.textCondicionSelected);
         imgAnimal = (ImageView) findViewById(R.id.img_reportar_photo);
         selecAnimal = (Button) findViewById(R.id.seleccionarAnimal);
-        btnCondicion=(Button)findViewById(R.id.btnTipoCondicion);
+        btnCondicion = (Button) findViewById(R.id.btnTipoCondicion);
         takePicture = (Button) findViewById(R.id.btnAddFoto);
         btnReportar = (Button) findViewById(R.id.btnreportar);
-        txtCondicion = (EditText)findViewById(R.id.txtCondicion);
-
-        inputLayoutCondicion= (TextInputLayout) findViewById(R.id.input_layout_condicion);
-
-        inputLayoutComoLLegar=(TextInputLayout) findViewById(R.id.input_layout_referencia);
-
-
-
+        lmap = (LinearLayout) findViewById(R.id.maplayaout);
+        lfoto = (LinearLayout) findViewById(R.id.lfoto);
+        init();
 
         btnAddUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(ReportarActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,0, ReportarActivity.this);
-                    dialogLocation = ProgressDialog.show(ReportarActivity.this, "",
-                            "Obteniendo ubicación....", true);
+                try {
+
+                    getLocation();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 /*Intent intent = new Intent(ReportarActivity.this, MapActivity.class);
                 intent.putExtra("esReporte", "esReporte");
                 startActivity(intent);*/
             }
         });
-
-
 
 
         selecAnimal.setOnClickListener(new View.OnClickListener() {
@@ -184,9 +304,10 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                         Integer img;
                         texto = sp.fakeData().get(position).getNombre();
                         img = sp.fakeData().get(position).getImg();
+                        txtSelect.setVisibility(View.VISIBLE);
+                        imgSelected.setVisibility(View.VISIBLE);
                         imgSelected.setImageResource(img);
                         txtSelect.setText(texto);
-                        resumen="Reporte de un "+texto;
                         txtSelect.setTextColor(Color.parseColor("#348839"));
                         selecAnimal.setText("Presiona para cambiar");
                         dialog.cancel();
@@ -195,10 +316,6 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
             }
         });
-
-
-
-
 
 
         btnCondicion.setOnClickListener(new View.OnClickListener() {
@@ -228,11 +345,10 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                         Integer img;
                         texto = sp.fakeDataCondicion().get(position).getNombre();
 
-                        problema = "\nEl animal reportado se encuentra en la siguiente condicion: "+texto;
 
-
-                       // img = sp.fakeData().get(position).getImg();
-                       // imgSelected.setImageResource(img);
+                        // img = sp.fakeData().get(position).getImg();
+                        // imgSelected.setImageResource(img);
+                        textCondicionSelected.setVisibility(View.VISIBLE);
                         textCondicionSelected.setText(texto);
                         textCondicionSelected.setTextColor(Color.parseColor("#348839"));
                         btnCondicion.setText("Presiona para cambiar");
@@ -251,13 +367,18 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                 //if(!validaTipoAnimal() || !validaCondicionAnimal() ||  !validaCondicion()  || !validaReferencia()){
 
                 //}else{
+                if (isValidForm()) {
 
                     progressDialog = ProgressDialog.show(ReportarActivity.this, "",
-                            "Procesando Solicitud....", true);
+                            "Se está enviando el reporte....", true);
                     new EnviarDatos(ReportarActivity.this).execute();
-                   // startActivity(new Intent(ReportarActivity.this, FinalReport.class));
-                   // finish();
-               // }
+                    // }
+                } else {
+
+                    Toast.makeText(ReportarActivity.this, "Complete la información", Toast.LENGTH_SHORT).show();
+
+
+                }
 
 
             }
@@ -267,10 +388,12 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         takePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("Entrando", "-------");
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     photoPermission();
                 } else {
+
                     callCamera();
                 }
             }
@@ -294,8 +417,8 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         }
     }
 
-    private boolean validaTipoAnimal(){
-        if(txtSelect.getText().toString().equalsIgnoreCase("")){
+    private boolean validaTipoAnimal() {
+        if (txtSelect.getText().toString().equalsIgnoreCase("")) {
 
             selecAnimal.setError("Selecciona tipo de animal");
 
@@ -303,14 +426,14 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             txtSelect.setTextColor(Color.parseColor("#B71C1C"));
 
             return false;
-        }else{
-          ///  input_layout_tipoAnimal.setErrorEnabled(false);
+        } else {
+            ///  input_layout_tipoAnimal.setErrorEnabled(false);
             return true;
         }
     }
 
-    private boolean validaCondicionAnimal(){
-        if(textCondicionSelected.getText().toString().equalsIgnoreCase("")){
+    private boolean validaCondicionAnimal() {
+        if (textCondicionSelected.getText().toString().equalsIgnoreCase("")) {
 
             btnCondicion.setError("Selecciona tipo de animal");
 
@@ -318,7 +441,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             textCondicionSelected.setTextColor(Color.parseColor("#B71C1C"));
 
             return false;
-        }else{
+        } else {
             ///  input_layout_tipoAnimal.setErrorEnabled(false);
             return true;
         }
@@ -348,6 +471,203 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         return true;
     }
 
+    public boolean isValidForm() {
+
+        if (txtSelect.getText() == "") {
+            Toast.makeText(ReportarActivity.this, "Seleccione el Tipo de Animal", Toast.LENGTH_SHORT).show();
+            return false;
+
+        } else if (textCondicionSelected.getText() == "") {
+
+            Toast.makeText(ReportarActivity.this, "Seleccione la condición en que está el animal", Toast.LENGTH_SHORT).show();
+            return false;
+
+        } else if (latitude == 0 || longitude == 0) {
+
+            Toast.makeText(ReportarActivity.this, "Complete la Ubicación del Animal", Toast.LENGTH_SHORT).show();
+            return false;
+
+        } else if (encoded == null) {
+            Toast.makeText(ReportarActivity.this, "Por favor tome la foto del animal", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }
+
+        return true;
+    }
+
+    /**
+     * Compress image
+     */
+    public String getFilename() {
+        File file = new File(Environment.getExternalStorageDirectory().getPath(), "MyFolder/Images");
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String uriSting = (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
+        return uriSting;
+
+    }
+
+
+    private String getRealPathFromURI(String contentURI) {
+        Uri contentUri = Uri.parse(contentURI);
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(index);
+        }
+    }
+
+    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        final float totalPixels = width * height;
+        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+            inSampleSize++;
+        }
+
+        return inSampleSize;
+    }
+
+    public String compressImage(String imageUri) {
+
+        String filePath = getRealPathFromURI(imageUri);
+        Bitmap scaledBitmap = null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+//      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
+//      you try the use the bitmap here, you will get null.
+        options.inJustDecodeBounds = true;
+        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+
+        int actualHeight = options.outHeight;
+        int actualWidth = options.outWidth;
+
+//      max Height and width values of the compressed image is taken as 816x612
+
+        float maxHeight = 816.0f;
+        float maxWidth = 612.0f;
+        float imgRatio = actualWidth / actualHeight;
+        float maxRatio = maxWidth / maxHeight;
+
+//      width and height values are set maintaining the aspect ratio of the image
+
+        if (actualHeight > maxHeight || actualWidth > maxWidth) {
+            if (imgRatio < maxRatio) {
+                imgRatio = maxHeight / actualHeight;
+                actualWidth = (int) (imgRatio * actualWidth);
+                actualHeight = (int) maxHeight;
+            } else if (imgRatio > maxRatio) {
+                imgRatio = maxWidth / actualWidth;
+                actualHeight = (int) (imgRatio * actualHeight);
+                actualWidth = (int) maxWidth;
+            } else {
+                actualHeight = (int) maxHeight;
+                actualWidth = (int) maxWidth;
+
+            }
+        }
+
+//      setting inSampleSize value allows to load a scaled down version of the original image
+
+        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+
+//      inJustDecodeBounds set to false to load the actual bitmap
+        options.inJustDecodeBounds = false;
+
+//      this options allow android to claim the bitmap memory if it runs low on memory
+        options.inPurgeable = true;
+        options.inInputShareable = true;
+        options.inTempStorage = new byte[16 * 1024];
+
+        try {
+//          load the bitmap from its path
+            bmp = BitmapFactory.decodeFile(filePath, options);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+
+        }
+        try {
+            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+        }
+
+        float ratioX = actualWidth / (float) options.outWidth;
+        float ratioY = actualHeight / (float) options.outHeight;
+        float middleX = actualWidth / 2.0f;
+        float middleY = actualHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+//      check the rotation of the image and display it properly
+        ExifInterface exif;
+        try {
+            exif = new ExifInterface(filePath);
+
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION, 0);
+            Log.d("EXIF", "Exif: " + orientation);
+            Matrix matrix = new Matrix();
+            if (orientation == 6) {
+                matrix.postRotate(90);
+                Log.d("EXIF", "Exif: " + orientation);
+            } else if (orientation == 3) {
+                matrix.postRotate(180);
+                Log.d("EXIF", "Exif: " + orientation);
+            } else if (orientation == 8) {
+                matrix.postRotate(270);
+                Log.d("EXIF", "Exif: " + orientation);
+            }
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
+                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
+                    true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileOutputStream out = null;
+        String filename = getFilename();
+        try {
+            out = new FileOutputStream(filename);
+
+//          write the compressed bitmap at the destination specified by filename.
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return filename;
+
+    }
+
+    /*****
+     *
+     *
+     *
+     *
+     */
+
+
 
 
     //CALL CAMERA
@@ -372,8 +692,25 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
-            imgAnimal.setVisibility(View.VISIBLE);
-            imgAnimal.setImageURI(PhotoAnimal);
+            lfoto.setVisibility(View.VISIBLE);
+
+            try {
+
+                String mImageNewPath = compressImage(PhotoAnimal.toString());
+
+                // Sending side
+                byte[] datab = mImageNewPath.getBytes("UTF-8");
+                encoded = Base64.encodeToString(datab, Base64.DEFAULT);
+                imgAnimal.setImageURI(Uri.parse(mImageNewPath));
+                //encodeImage();
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+
+
+
         }
     }
 
@@ -406,7 +743,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     }
 
 
-    @Override
+
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
 
@@ -429,19 +766,62 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                             getString(R.string.errorDescWrite));
                 }
                 break;
+            case PERMISSION_ACCESS_COARSE_LOCATION:
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // All good!
+                    getLocation();
+                } else {
+                    Toast.makeText(this, "Need your location!", Toast.LENGTH_SHORT).show();
+                }
 
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
+    public void setmap(Location location) {
+        LatLng latlng = new LatLng(location.getLatitude(),
+                location.getLongitude());
+
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latlng).zoom(16f).build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+
+        if (map != null) {
+            map.clear();
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latlng);
+            Marker marker = map.addMarker(markerOptions);
+            map.moveCamera(cameraUpdate);
+
+        }
+
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+    }
+
     @Override
     public void onLocationChanged(Location location) {
-        dialogLocation.cancel();
-        Toast toast1 =
-                Toast.makeText(getApplicationContext(),
-                        "Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude(), Toast.LENGTH_SHORT);
-        toast1.show();
+        if (dialogLocation != null)
+            dialogLocation.dismiss();
+
+        if (latitude != 0 && longitude != 0) {
+
+            setmap(location);
+        }
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.removeUpdates(this);
 
 
     }
@@ -453,43 +833,52 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onProviderEnabled(String provider) {
-        Log.d("Latitude","enable");
+        Log.d("Latitude", "enable");
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude","status");
+        Log.d("Latitude", "status");
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
 
-
-
-
-
+    }
 
 
     //Metodo de envio de formulario
 
 
-    class EnviarDatos extends AsyncTask<String,String,String> {
+    class EnviarDatos extends AsyncTask<String, String, String> {
         private Activity context;
-        EnviarDatos(Activity contex){
-            this.context=contex;
+
+        EnviarDatos(Activity contex) {
+            this.context = contex;
         }
 
         @Override
-        protected  String doInBackground(String... params){
-            if(registroReporte()){
+        protected String doInBackground(String... params) {
+
+            if (registroReporte()) {
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                         Toast.makeText(getApplicationContext(), "Datos enviados correctamente", Toast.LENGTH_SHORT).show();
-                        progressDialog.cancel();
+                        startActivity(new Intent(getApplicationContext(), ResultScreen.class));
 
+                        ReportarActivity.this.finish();
                     }
                 });
-            }
-            else{
+
+            } else {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -500,67 +889,138 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             }
 
 
-
             return null;
         }
 
     }
 
 
+    public Boolean registroReporte() {
 
-    public Boolean registroReporte(){
         try {
 
+            String attachmentName = "bitmap";
+            String attachmentFileName = "bitmap.bmp";
 
-            problema="\nMas informacion acerca de la condicion: "+txtCondicion.getText().toString();
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+            int bytesRead, bytesAvailable, bufferSize;
+            byte[] buffer;
+            int maxBufferSize = 1 * 1024 * 1024;
+            String path = PhotoAnimal.getPath();
+            File sourceFile = new File(path);
 
-            problema = problema +  "\nLa informacion detallada para llegar es: "+ txvComoLLegar.getText().toString();
+            problema = "El siguiente animal reportado tipo: " + txtSelect.getText() + " con las siguientes condiciones " + textCondicionSelected.getText()
+                    + " , localizado en " + "<a href=\"http://maps.google.com/?q=" + latitude + "," + longitude + "\">aqui </a>";
+            FileInputStream fileInputStream = new FileInputStream(sourceFile);
 
-
-
-               URL url = new URL("http://192.168.3.24:81/apiOs/generarTicket.php");
+            URL url = new URL("http://192.168.4.21:8088/rescateAnimal/api_ticket/generarTicket.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
                 conn.setConnectTimeout(15000);
                 conn.setRequestMethod("POST");
-                 //conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-               conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-                conn.setDoInput(true);
-                String urlParameters = "nombre=" + nombre + "&correo=" + correo + "&telefono=" + telefono + "&resumen=" + resumen + "&problema=" + problema + "&extencion=" + extencion + "&sitio=Android App"+ "";
-                conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setDoInput(true); // Allow Inputs
+
+            conn.setDoOutput(true); // Allow Outputs
 
                 DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-                wr.writeBytes(urlParameters);
-                wr.flush();
-                 wr.close();
-                int responseCode = conn.getResponseCode();
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream()));
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"nombre\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(nombre);
+            wr.writeBytes(lineEnd);
 
-                in.close();
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"correo\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(correo);
+            wr.writeBytes(lineEnd);
+
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"telefono\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(telefono);
+            wr.writeBytes(lineEnd);
+
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"resumen\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(resumen);
+            wr.writeBytes(lineEnd);
+
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"problema\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(problema);
+            wr.writeBytes(lineEnd);
 
 
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"extencion\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(extencion);
+            wr.writeBytes(lineEnd);
+
+
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"sitio\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes("Android App");
+            wr.writeBytes(lineEnd);
+
+            String filename = path.substring(path.lastIndexOf("/") + 1);
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"attachments\";filename=\"" + filename + "\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+
+
+            // create a buffer of  maximum size
+            bytesAvailable = fileInputStream.available();
+
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            buffer = new byte[bufferSize];
+
+            // read file and write it into form...
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+            while (bytesRead > 0) {
+                wr.write(buffer, 0, bufferSize);
+                bytesAvailable = fileInputStream.available();
+                bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            }
+
+            // send multipart form data necesssary after file data...
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
+            fileInputStream.close();
+            wr.flush();
+
+            Log.e("File Sent, Response: ", String.valueOf(conn.getResponseCode()));
+            InputStream is = conn.getInputStream();
+
+            int ch;
+            StringBuffer b = new StringBuffer();
+            while ((ch = is.read()) != -1) {
+                b.append((char) ch);
+            }
+            String s = b.toString();
+            Log.i("Response", s);
+            wr.close();
+            is.close();
 
 
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
+
         return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

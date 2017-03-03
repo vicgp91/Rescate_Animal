@@ -75,9 +75,11 @@ public class SPControl {
 
         list = new ArrayList<>();
 
-        list.add(new infoAnimalBeans("Perezoso de 2 dedos", R.drawable.peresozo2_dedos, R.drawable.peresoz2_dedos_menu, "Choloepus/Megalonychidae", "file:///android_asset/peresozo2dedos.html"));
-        list.add(new infoAnimalBeans("Perezoso de 3 dedos" , R.drawable.peresozo3_dedos, R.drawable.peresozo3_dedos_menu, "Bradypus/Bradypodidae", "file:///android_asset/peresozo3dedos.html"));
-        list.add(new infoAnimalBeans("Jaguar" , R.drawable.jaguar, R.drawable.jaguar_menu, "Panthera onca", "file:///android_asset/peresozo2dedos.html"));
+        list.add(new infoAnimalBeans("Perezoso", R.drawable.peresozo2_dedos, R.drawable.peresoz2_dedos_menu, "Choloepus/Megalonychidae", "file:///android_asset/peresozo2dedos.html"));
+        list.add(new infoAnimalBeans("Hormiguero", R.drawable.hormiguero, R.drawable.osoh, "Myrmecophaga tridactyla", "file:///android_asset/hormiguero.html"));
+        list.add(new infoAnimalBeans("Aramadillo", R.drawable.armadillo, R.drawable.armadillop, "Dasypus novemcinctus", "file:///android_asset/armadillo.html"));
+        list.add(new infoAnimalBeans("Zarigüeya", R.drawable.zarigueya, R.drawable.zarigueyad, "Didelphiss", "file:///android_asset/zarigueya.html"));
+
         return list;
 
     }
@@ -87,10 +89,10 @@ public class SPControl {
 
         listCondicion = new ArrayList<>();
 
-        listCondicion.add(new CondicionAnimalBeans("Intentan cruzar la calle"));
-        listCondicion.add(new CondicionAnimalBeans("Atropellados"));
-        listCondicion.add(new CondicionAnimalBeans("Perdidos" ));
-        listCondicion.add(new CondicionAnimalBeans("Otros"));
+        listCondicion.add(new CondicionAnimalBeans("Intenta cruzar la calle"));
+        listCondicion.add(new CondicionAnimalBeans("Atropellado"));
+        listCondicion.add(new CondicionAnimalBeans("Herido"));
+        listCondicion.add(new CondicionAnimalBeans("Otro"));
         return listCondicion;
 
     }

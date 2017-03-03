@@ -6,16 +6,41 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:minHeight="?attr/actionBarSize"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:layout_height="match_parent"
+            app:collapsedTitleGravity="left"
+            app:expandedTitleGravity="bottom|center_horizontal"
+            app:expandedTitleTextAppearance="@style/TextAppearance.Rescate.Title.Expanded"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary">
+
+            <ImageView
+                android:id="@+id/expandedImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/perezoso2"
+
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:title="@string/ayudalosACasa"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin">
+
+
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 
@@ -31,58 +56,46 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/logo_green_text" />
+            <!--
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="110dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:src="@drawable/logo_green_text" />-->
 
             <TextView
                 android:id="@+id/ayudalos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/contenido"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/ayudalosACasa"
+                android:layout_gravity="center_horizontal"
+
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tipoAnimal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/contenido"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/dinosTipoAnimal"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp" />
 
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_tipoAnimal"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="16dp"
-                android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/seleccionarAnimal"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/contenido"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/btn_green_background"
-                android:text="Presiona para seleccionar"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
-</android.support.design.widget.TextInputLayout>
+                android:layout_marginBottom="5dp">
+
+                <Button
+                    android:id="@+id/seleccionarAnimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_green_background"
+                    android:text="¿Qué tipo de animal es?"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
+            </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,6 +107,7 @@
                     android:id="@+id/imgSelected"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_weight="1" />
 
                 <TextView
@@ -102,44 +116,32 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
                     android:textSize="15sp" />
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/labelCondicion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="16dp"
-                android:text="Condición"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp" />
-
 
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_tipoCondicion"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="16dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
                 <Button
                     android:id="@+id/btnTipoCondicion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/contenido"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginTop="16dp"
+
                     android:background="@drawable/btn_green_background"
-                    android:text="Presiona para seleccionar"
+                    android:text="¿Cuál es su condición?"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textSize="12sp" />
             </android.support.design.widget.TextInputLayout>
-
 
 
             <LinearLayout
@@ -148,132 +150,112 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-               <!-- <ImageView
-                    android:id="@+id/imgSelected"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />-->
+                <!-- <ImageView
+                     android:id="@+id/imgSelected"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1" />-->
 
                 <TextView
                     android:id="@+id/textCondicionSelected"
                     android:layout_width="5dp"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center|center_vertical"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginTop="10dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp" />
 
             </LinearLayout>
 
-
-
-
-
-
-
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_condicion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/txtCondicion"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="30dp"
-                    android:gravity="left"
-                    android:hint="Describe mas información de la condición"
-                    android:inputType="textMultiLine"
-                    android:textColor="#000000"
-                    android:textColorHint="@color/colorPrimary" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <TextView
-                android:id="@+id/labelUbicacion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dp"
-                android:text="Ubicación"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp" />
-
-            <Button
-                android:id="@+id/btnAddUbicacion"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/contenido"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/btn_green_background"
-                android:text="Presiona para seleccionar"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_referencia"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="16dp"
-                android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/txtComoLLegar"
+                <Button
+                    android:id="@+id/btnAddUbicacion"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="left"
-                    android:hint="Agrega referencia de cómo llegar al lugar"
-                    android:inputType="textMultiLine"
-                    android:textColor="#000000"
-                    android:textColorHint="@color/colorPrimary" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/btn_green_background"
+                    android:text="¿Dónde se encuentra el  animal?"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp" />
 
+            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/img_reportar_photo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/maplayaout"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
 
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <fragment
+
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
             <Button
                 android:id="@+id/btnAddFoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/contenido"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/btn_green_background"
                 android:text="Tómale una foto"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="12sp" />
 
+            <LinearLayout
+                android:id="@+id/lfoto"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_reportar_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnreportar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/contenido"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/btn_orange_background"
                 android:text="Repórtalo"
                 android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
+                android:textColor="@color/colorBlack"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
 
         </LinearLayout>
 

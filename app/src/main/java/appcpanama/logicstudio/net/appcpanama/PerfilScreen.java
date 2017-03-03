@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ public class PerfilScreen extends AppCompatActivity implements View.OnClickListe
     LinearLayout btnActDatos,
             btnCambiarContr,
             btnLogOut;
+    LinearLayout btnShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class PerfilScreen extends AppCompatActivity implements View.OnClickListe
         btnActDatos = (LinearLayout) findViewById(R.id.lay_perfil_datos);
         btnCambiarContr = (LinearLayout) findViewById(R.id.lay_perfil_contrasena);
         btnLogOut = (LinearLayout) findViewById(R.id.lay_perfil_sesion);
+        btnShare = (LinearLayout) findViewById(R.id.lay_compartir);
+
     }
 
 
@@ -47,6 +51,8 @@ public class PerfilScreen extends AppCompatActivity implements View.OnClickListe
         btnActDatos.setOnClickListener(this);
         btnCambiarContr.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
+        btnShare.setOnClickListener(this);
+
 
     }
 
@@ -67,6 +73,9 @@ public class PerfilScreen extends AppCompatActivity implements View.OnClickListe
 
             case R.id.lay_perfil_sesion:
                 cerrarSesion();
+                break;
+            case R.id.lay_compartir:
+                shareContent();
                 break;
 
 
@@ -94,4 +103,14 @@ public class PerfilScreen extends AppCompatActivity implements View.OnClickListe
         }
         return (super.onOptionsItemSelected(menuItem));
     }
+
+
+    public void shareContent() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/html");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<p>Salva la vida de uan especie, descarga Rescate Animal </p>"));
+        startActivity(Intent.createChooser(sharingIntent, "Share using"));
+
+    }
+
 }

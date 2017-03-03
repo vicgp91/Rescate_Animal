@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import appcpanama.logicstudio.net.appcpanama.Adapters.drawerAdapter;
 import appcpanama.logicstudio.net.appcpanama.Commons.MaterialDialogClass;
@@ -52,6 +54,9 @@ public class HomeScreen extends AppCompatActivity {
         drawerLayoutManager = new LinearLayoutManager(getApplicationContext());
 
         drawerAdapter = new drawerAdapter(HomeScreen.this);
+        TextView textView = (TextView) findViewById(R.id.logicrul);
+        textView.setText("http://www.logicstudio.net");
+        Linkify.addLinks(textView, Linkify.WEB_URLS);
     }
 
     private void assign() {
@@ -115,7 +120,7 @@ public class HomeScreen extends AppCompatActivity {
 
             case 4:
                 String phone = getResources().getString(R.string.numberContact);
-                drawerPosition = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                drawerPosition = new Intent(HomeScreen.this, ContactScreen.class);
 
                 break;
 

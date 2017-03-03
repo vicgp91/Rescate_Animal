@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -56,6 +57,8 @@ public class AnimalDetails extends AppCompatActivity {
         subTituloBarra.setText(sp.fakeData().get(Integer.parseInt(animalSelected)).getNombreCientifico());
 
         webView = (WebView) findViewById(R.id.webViewMasInfoAnimal);
+        WebSettings settings = webView.getSettings();
+        settings.setDefaultTextEncodingName("utf-8");
         webView.loadUrl(sp.fakeData().get(Integer.parseInt(animalSelected)).getRutaHtml());
 
 

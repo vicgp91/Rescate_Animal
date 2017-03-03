@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="appcpanama.logicstudio.net.appcpanama" >
+    package="appcpanama.logicstudio.net.appcpanama">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -13,12 +13,12 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logoperezoso"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/GOOGLE_MAP_DEVELOPER_KEY_ANDROID_VICENTE" />
+            android:value="@string/GOOGLE_MAP_DEVELOPER_KEY_ANDROID_JACOB" />
 
         <uses-feature
             android:glEsVersion="0x00020000"
@@ -26,7 +26,7 @@
 
         <activity
             android:name=".Activity_Valida_Login"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,12 +45,20 @@
         <activity android:name=".MapActivity" />
         <activity
             android:name=".ReportarActivity"
+            android:label="@string/ayudalosACasa"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeReporte" />
         <activity android:name=".FinalReport" />
         <activity
             android:name=".ParticipaActivity"
-            android:label="@string/title_activity_participa" >
-        </activity>
+            android:label="@string/title_activity_participa" />
+        <activity
+            android:name=".ResultScreen"
+            android:label="@string/title_activity_participa" />
+        <activity
+            android:name=".ContactScreen"
+            android:label="@string/title_activity_contact_screen"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

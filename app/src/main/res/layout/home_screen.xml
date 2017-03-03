@@ -41,7 +41,8 @@
                     android:id="@+id/frmlay_home_root"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:weightSum="1">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -49,6 +50,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="20dp"
                         android:src="@drawable/logo_white_text" />
+
 
                     <TextView
                         android:layout_width="match_parent"
@@ -58,8 +60,8 @@
                         android:text="@string/homeTitle"
                         android:textColor="@color/colorWhite"
                         android:textSize="19sp"
-                        android:textStyle="bold" />
-
+                        android:textStyle="bold"
+                        android:id="@+id/textView" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -84,8 +86,35 @@
                         android:background="@drawable/btn_yellow_background"
                         android:text="@string/homeButton"
                         android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                    />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:text="@string/hechopor"
                         android:textColor="@color/colorWhite"
-                        android:textSize="18sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:id="@+id/textView3"
+                        android:layout_weight="0.21" />
+
+                    <TextView
+                        android:id="@+id/logicrul"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="65dp"
+                        android:layout_marginRight="65dp"
+                        android:layout_marginTop="0dp"
+                        android:gravity="center"
+                        android:text="@string/website"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

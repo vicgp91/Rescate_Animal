@@ -7,6 +7,7 @@
     //---- GOOGLE MAPS KEY
     <string name="GOOGLE_MAP_DEVELOPER_KEY_ANDROID_LUIS">AIzaSyA9XZ3gY_kg2GV2AODLqUOUBqbm0vCSFos</string>
     <string name="GOOGLE_MAP_DEVELOPER_KEY_ANDROID_VICENTE">AIzaSyCqLhGsEb_o-AhFYmWL5aIksrVvs-nlWYU</string>
+    <string name="GOOGLE_MAP_DEVELOPER_KEY_ANDROID_JACOB">AIzaSyB3MNPZRuUfuv22aUeICanVarGBzy40duk</string>
 
     //Drawer Strings
     <string name="open_drawer">Open Drawer</string>
@@ -36,12 +37,13 @@
     <string name="homeTitle">¡Bienvenido Logic Studio!</string>
     <string name="homeSubTitle">Ayuda a un animal a regresar a casa y deja tu huella</string>
     <string name="homeButton">Reportar un Animal en Peligro</string>
-
+    <string name="hechopor">Hecho en Panamá por Logic Studio  </string>
     //----Activity Info Animal
     <string name="infoADescription">Cómo cuidarlos si los encuentras</string>
     <string name="infoBtnUbicacion">Ver Ubicación</string>
     <string name="infoTitleComoAyu">¿Cómo ayudarlos en la calle?</string>
     <string name="infoBtnVerMas">Más Información</string>
+    <string name="website">www.logicstudio.net</string>
 
 
     //----Activity Mapas
@@ -50,8 +52,14 @@
 
     //----Activity Perfil
     <string name="perfilTitle">Perfil</string>
+    <string name="contactTitle">Contáctenos</string>
+
+    <string name="resultTitle">Felicidades!</string>
+
     <string name="perfilSubtitleHuella">Reporta animales, colecta huellas.</string>
     <string name="perfilActDatos">Actualizar Datos</string>
+    <string name="sitioappc">www.appcpanama.org</string>
+
     <string name="perfilCambiarContra">Cambiar Contraseña</string>
     <string name="perfilCerrarSesion">Cerrar Sesión</string>
 
@@ -69,26 +77,36 @@
     <string name="finalReportRegresar">Regresar</string>
 
 
-
     //---- Text Example
     <string name="textTest">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum libero et placerat aliquet. Etiam semper augue ligula, a lacinia enim sollicitudin non. Integer eget nisl at ipsum tempus placerat. Pellentesque nec lacus dui. Cras venenatis libero sodales tellus rhoncus, nec malesuada turpis euismod. Donec vel malesuada ipsum, sit amet laoreet sapien. Duis finibus maximus est ac tempus. Fusce tincidunt, mi ac congue vulputate, ex est finibus leo, eleifend vestibulum massa ex sed massa. Aliquam posuere, magna id hendrerit ornare, velit eros molestie tortor, ac maximus felis massa vitae dui. Aliquam erat volutpat.</string>
     <string name="nombreTest">Logic Studio</string>
+    <string name="nombreappc">Asociación Panamericana para la Conservación</string>
+
     <string name="emailTest">Panama@logicstudio.net</string>
+    <string name="comparte">Compartir...</string>
     <string name="huellasTest">20 Huellas</string>
     <string name="valueExampleFinalReport">1</string>
 
+    <string name="mensajeHuella">Felicidades, has ganado 4 huellas!</string>
 
     //----Number Contact
     <string name="numberContact">+5073171258</string>
 
 
-
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_activity__valida__login">Activity_Valida_Login</string>
-    <string name="ayudalosACasa">Ayúdalos a volver a casa</string>
+    <string name="ayudalosACasa">Ayúdalo a volver a casa</string>
     <string name="dinosTipoAnimal">Dinos qué tipo de animal</string>
     <string name="title_activity_participa">Participa</string>
     <string name="participaHtml"></string>
+    <string name="title_activity_social">SocialActivity</string>
+
+    <string name="shareThis">Compartir</string>
+    <string name="correoappc">info@appcpanama.org</string>
+
+    <string name="phoneappc">317-1258</string>
+    <string name="title_activity_contact_screen">ContactScreen</string>
+
+
 </resources>
