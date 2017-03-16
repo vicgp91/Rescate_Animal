@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:singleLine="true"
-            android:text="panama@logicstudio.net"
+            android:text=""
             android:textColor="@color/colorWhite" />
 
         <TextView
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:singleLine="true"
-            android:text="123456"
+            android:text=""
             android:textColor="@color/colorWhite" />
 
 

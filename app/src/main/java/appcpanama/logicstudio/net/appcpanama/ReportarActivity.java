@@ -62,6 +62,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -113,6 +115,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     double latitude;
     double longitude;
     Location location;
+    Integer tickerid;
     //Controls
     Toolbar toolbar;
     ProgressDialog progressDialog;
@@ -121,7 +124,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     CondicionAnimalAdapter adapaterCondicion;
     RecyclerView.LayoutManager layoutManager;
     ImageView imgSelected;
-    TextView txtSelect, textCondicionSelected;
+    TextView txtSelect, textCondicionSelected, txtCodigoAnimal, txtCodigoCondicion;
     ImageView imgAnimal;
     Button selecAnimal, btnCondicion;
     Button takePicture;
@@ -142,8 +145,9 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
     LinearLayout lfoto;
     Uri PhotoAnimal;
     String encoded = null;
+    public static final String PREFS_NAME = "RA_PREFS";
 
-    String nombre = "android", correo = "correo@android.com", telefono = "999-9999", resumen = "reporte desde android", problema = "reporte android", extencion = "+507";
+    String nombre, correo, telefono, resumen = "reporte desde android", problema = "reporte android", extencion = "+507";
 
 
     public Runnable runLocation = new Runnable() {
@@ -256,6 +260,9 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
         btnCondicion = (Button) findViewById(R.id.btnTipoCondicion);
         takePicture = (Button) findViewById(R.id.btnAddFoto);
         btnReportar = (Button) findViewById(R.id.btnreportar);
+
+        txtCodigoAnimal = (TextView) findViewById(R.id.codigoAnimal);
+        txtCodigoCondicion = (TextView) findViewById(R.id.codigoCondicion);
         lmap = (LinearLayout) findViewById(R.id.maplayaout);
         lfoto = (LinearLayout) findViewById(R.id.lfoto);
         init();
@@ -302,8 +309,12 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                         SPControl sp = new SPControl(ReportarActivity.this);
                         String texto;
                         Integer img;
+                        Integer codigo;
                         texto = sp.fakeData().get(position).getNombre();
                         img = sp.fakeData().get(position).getImg();
+                        codigo = sp.fakeData().get(position).getCodigoAnimal();
+                        Log.i("CODIGO", String.valueOf(codigo));
+                        txtCodigoAnimal.setText(String.valueOf(codigo));
                         txtSelect.setVisibility(View.VISIBLE);
                         imgSelected.setVisibility(View.VISIBLE);
                         imgSelected.setImageResource(img);
@@ -342,14 +353,16 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
                         SPControl sp = new SPControl(ReportarActivity.this);
                         String texto;
+                        Integer codigo;
                         Integer img;
                         texto = sp.fakeDataCondicion().get(position).getNombre();
-
+                        codigo = sp.fakeDataCondicion().get(position).getCodigoCondicion();
 
                         // img = sp.fakeData().get(position).getImg();
                         // imgSelected.setImageResource(img);
                         textCondicionSelected.setVisibility(View.VISIBLE);
                         textCondicionSelected.setText(texto);
+                        txtCodigoCondicion.setText(String.valueOf(codigo));
                         textCondicionSelected.setTextColor(Color.parseColor("#348839"));
                         btnCondicion.setText("Presiona para cambiar");
                         dialog.cancel();
@@ -868,7 +881,7 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
                         if (progressDialog != null && progressDialog.isShowing()) {
                             progressDialog.dismiss();
                         }
-                        Toast.makeText(getApplicationContext(), "Datos enviados correctamente", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Su tiquete número: " + tickerid + " ha sido creado. ", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), ResultScreen.class));
 
                         ReportarActivity.this.finish();
@@ -894,14 +907,21 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
 
     }
 
+    public void saveHuellas(Integer huella) {
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        editor = settings.edit();
+        editor.putInt("huella", huella); // Storing long
+        editor.commit(); // commit changes
+    }
+
 
     public Boolean registroReporte() {
 
         try {
-
             String attachmentName = "bitmap";
             String attachmentFileName = "bitmap.bmp";
-
             String lineEnd = "\r\n";
             String twoHyphens = "--";
             String boundary = "*****";
@@ -910,15 +930,25 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             int maxBufferSize = 1 * 1024 * 1024;
             String path = PhotoAnimal.getPath();
             File sourceFile = new File(path);
+            Integer codanimal = Integer.parseInt((String) txtCodigoAnimal.getText());
+            Log.i("Codigo Animal ", String.valueOf(codanimal));
+            Integer codCondi = Integer.parseInt((String) txtCodigoCondicion.getText());
+            Log.i("Codigo Condicion", String.valueOf(codCondi));
 
             problema = "El siguiente animal reportado tipo: " + txtSelect.getText() + " con las siguientes condiciones " + textCondicionSelected.getText()
                     + " , localizado en " + "<a href=\"http://maps.google.com/?q=" + latitude + "," + longitude + "\">aqui </a>";
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
-
+            SharedPreferences settings;
+            settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+            SharedPreferences.Editor editor = settings.edit();
+            Integer coduser = settings.getInt("id", 0);
+            nombre = settings.getString("name", null);
+            correo = settings.getString("Correo", null);
+            telefono = settings.getString("phone", null);
             URL url = new URL("http://192.168.4.21:8088/rescateAnimal/api_ticket/generarTicket.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
+            conn.setConnectTimeout(25000);
                 conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
             conn.setRequestProperty("Connection", "Keep-Alive");
@@ -931,6 +961,12 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             wr.writeBytes("Content-Disposition: form-data; name=\"nombre\"" + lineEnd);
             wr.writeBytes(lineEnd);
             wr.writeBytes(nombre);
+            wr.writeBytes(lineEnd);
+
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"u_acc\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(String.valueOf(coduser));
             wr.writeBytes(lineEnd);
 
             wr.writeBytes(twoHyphens + boundary + lineEnd);
@@ -971,10 +1007,39 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             wr.writeBytes("Android App");
             wr.writeBytes(lineEnd);
 
+
+            //enviado codigo del animal
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"codigoanimal\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(String.valueOf(codanimal));
+            wr.writeBytes(lineEnd);
+            //enviado codigo de la condicion
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"codigocondicion\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(String.valueOf(codCondi));
+            wr.writeBytes(lineEnd);
+
+            //enviado Latitude
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"latitud\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(String.valueOf(latitude));
+            wr.writeBytes(lineEnd);
+
+            //enviado Longitud
+            wr.writeBytes(twoHyphens + boundary + lineEnd);
+            wr.writeBytes("Content-Disposition: form-data; name=\"longitud\"" + lineEnd);
+            wr.writeBytes(lineEnd);
+            wr.writeBytes(String.valueOf(longitude));
+            wr.writeBytes(lineEnd);
+
             String filename = path.substring(path.lastIndexOf("/") + 1);
             wr.writeBytes(twoHyphens + boundary + lineEnd);
             wr.writeBytes("Content-Disposition: form-data; name=\"attachments\";filename=\"" + filename + "\"" + lineEnd);
             wr.writeBytes(lineEnd);
+
 
 
             // create a buffer of  maximum size
@@ -1007,8 +1072,39 @@ public class ReportarActivity extends AppCompatActivity implements LocationListe
             while ((ch = is.read()) != -1) {
                 b.append((char) ch);
             }
+
             String s = b.toString();
+            if (conn.getResponseCode() == 200) {
+                Log.i("Message", s);
+                try {
+                    JSONObject reader = new JSONObject(s);
+                    String error = reader.getString("error");
+                    if (error.equals("")) {
+                        Integer hue = reader.getInt("huella_user");
+                        saveHuellas(hue);
+                        tickerid = reader.getInt("ticketid");
+                    } else {
+                        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            } else {
+                return false;
+            }
+
+
             Log.i("Response", s);
+
+
+
+
+
             wr.close();
             is.close();
 

@@ -12,18 +12,30 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,7 +48,9 @@ public class LoginScreen extends AppCompatActivity {
 
     //Clases
     SPControl control;
+    public static final String PREFS_NAME = "RA_PREFS";
 
+    String server_response = "{}";
     //Controls
     Button btnLogin,
             btnRegister;
@@ -52,6 +66,22 @@ public class LoginScreen extends AppCompatActivity {
         initInstance();
         assign();
     }
+
+    public void savePrererencias(Integer id, String pass, String name, String phone, String Correo, Integer huella) {
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = getApplicationContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE); //1
+        editor = settings.edit();
+        editor.putInt("id", id); // Storing boolean - true/false
+        editor.putString("name", name); // Storing boolean - true/false
+        editor.putString("phone", phone); // Storing string
+        editor.putString("pass", pass); // Storing integer
+        editor.putString("Correo", Correo); // Storing float
+        editor.putInt("huella", huella); // Storing long
+        editor.commit(); // commit changes
+    }
+
+
 
     private void initInstance() {
         btnLogin = (Button) findViewById(R.id.btn_login_sesion);
@@ -75,9 +105,17 @@ public class LoginScreen extends AppCompatActivity {
                     dialog();
                 }
                 else{*/
+
+                if (!user.getText().toString().equals("") && !pass.getText().toString().equals("")) {
                     dialog = ProgressDialog.show(LoginScreen.this, "",
                             "Procesando Solicitud....", true);
                     new EnviarDatos(LoginScreen.this).execute();
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Complete la información requerida.", Toast.LENGTH_SHORT).show();
+
+                }
                // }
 
                 //control.setStringValue("logValue", "loginAccedido");
@@ -117,16 +155,30 @@ public class LoginScreen extends AppCompatActivity {
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-
-
                         control.setStringValue("logValue", "loginAccedido");
-                       startActivity(new Intent(LoginScreen.this, HomeScreen.class));
-                       finish();
-
-                      //  Toast.makeText(getApplicationContext(), "Datos enviados correctamente", Toast.LENGTH_SHORT).show();
-                        user.setText("");
-                        pass.setText("");
                         dialog.cancel();
+
+                        try {
+                            JSONObject reader = new JSONObject(server_response);
+                            String error = reader.getString("error");
+
+                            if (error.equals("")) {
+                                savePrererencias(reader.getInt("id"), pass.getText().toString(), reader.getString("name"),
+                                        reader.getString("phone_user"), user.getText().toString(),
+                                        reader.getInt("huella_user"));
+                                startActivity(new Intent(LoginScreen.this, HomeScreen.class));
+                                finish();
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -134,7 +186,7 @@ public class LoginScreen extends AppCompatActivity {
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Credenciales Incorrectas", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Se ha Producido un error al enviar, intente nuevamente", Toast.LENGTH_SHORT).show();
                         dialog.cancel();
 
                     }
@@ -184,63 +236,77 @@ public class LoginScreen extends AppCompatActivity {
         return isInternetAvailable;
     }
 
+    public String sha256(String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.update(s.getBytes("UTF-8"));
+            byte messageDigest[] = digest.digest();
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            return String.format("%064x", new java.math.BigInteger(1, messageDigest));
 
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     public Boolean registroUsuario() {
-        //try {
+        try {
             String userName, passW;
             userName = user.getText().toString();
             passW = pass.getText().toString();
 
-            UsuarioInfoBeans usuario = new UsuarioInfoBeans();
-            usuario.setUserName("logic01");
-            usuario.setPassword("123456");
-            usuario.setLastLogin(new Date());
-            usuario.setNombreCompleto("Logic Studio");
-            usuario.setCorreoElectronico("panama@logicstudio.net");
+            String passencryp = sha256(passW);
+            Log.i("encryp", passencryp);
+            String lineEnd = "\r\n";
+            String twoHyphens = "--";
+            String boundary = "*****";
+            int maxBufferSize = 1 * 1024 * 1024;
+            URL url = new URL("http://192.168.4.21:8088/rescateAnimal/api_ticket/validate_user.php");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(10000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            //conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+            conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+            conn.setDoInput(true);
+            String urlParameters = "codigo=" + 0 + "&correo=" + userName + "&pass=" + passencryp + "";
+            conn.setDoOutput(true);
 
+            DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+            wr.writeBytes(urlParameters);
+            Log.i(" Sent, Response: ", String.valueOf(conn.getResponseCode()));
+            InputStream is = conn.getInputStream();
 
-            if (userName.trim().equalsIgnoreCase(usuario.getCorreoElectronico().trim())
-                    && passW.trim().equalsIgnoreCase(usuario.getPassword().trim())) {
-       return true;
-
-            } else {
-        return false;
+            int ch;
+            StringBuffer b = new StringBuffer();
+            while ((ch = is.read()) != -1) {
+                b.append((char) ch);
             }
-/*
-            //if(tieneRed) {
+            if (conn.getResponseCode() == 200) {
+                server_response = b.toString();
+                Log.i("Message", server_response);
+            } else {
+                Log.e("Server response", "Failed to get server response");
+                return false;
 
-                URL url = new URL("http://10.10.10.16:8081/rescateanimal/serviceRescate/login");
-                HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-                conn.setDoInput(true);
-                String urlParameters = "userName=" + userName + "&password=" + passW + "";
-                conn.setDoOutput(true);
-                DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-                wr.writeBytes(urlParameters);
-                wr.flush();
-                wr.close();
-                int responseCode = conn.getResponseCode();
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream()));
+            }
 
-                in.close();
-            //}
+            wr.close();
+            is.close();
+
             return true;
-       }catch (UnsupportedEncodingException e){
-            e.printStackTrace();
-            return false;
-        }
-        catch (IOException e){
-            e.printStackTrace();
-            return false;
-        }
-*/
-    }
 
+
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
 
 
 }

@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,6 +7,16 @@
     android:orientation="vertical"
     tools:context="appcpanama.logicstudio.net.appcpanama.RegisterScreen">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="@drawable/bottom_shadow">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
@@ -51,6 +62,22 @@
             android:inputType="textEmailAddress"
             android:textColor="@color/colorWhite" />
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/phoneRegisterHint"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/edt_register_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorWhite" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,6 +88,22 @@
 
         <EditText
             android:id="@+id/edt_register_contra"
+            android:layout_width="match_parent"
+            android:inputType="textPassword"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/rcontraRegisterHint"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/edt_register_contrar"
             android:layout_width="match_parent"
             android:inputType="textPassword"
             android:layout_height="wrap_content"
@@ -81,22 +124,29 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|bottom"
-        android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|bottom"
+                android:orientation="vertical">
 
 
-        <Button
-            android:id="@+id/btn_registro_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="35dp"
-            android:background="@color/colorPrimaryDark"
-            android:text="@string/poseeRegistroText"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite" />
-    </LinearLayout>
+                <Button
+                    android:id="@+id/btn_registro_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="35dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="@string/poseeRegistroText"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
 </LinearLayout>

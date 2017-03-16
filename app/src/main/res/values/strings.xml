@@ -27,7 +27,11 @@
     //----Activity Register
     <string name="nombreRegisterHint">Tu Nombre</string>
     <string name="emailRegisterHint">Tu e-mail</string>
+    <string name="phoneRegisterHint">Tu Teléfono</string>
+
     <string name="contraRegisterHint">Escoge una Contraseña</string>
+    <string name="rcontraRegisterHint">Repita la Contraseña</string>
+
     <string name="crearRegistroText">Crear tu Cuenta</string>
     <string name="poseeRegistroText">¿Ya tienes tu cuenta? Login</string>
     <string name="dialogRegisterTitle">Información</string>

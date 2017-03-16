@@ -7,12 +7,19 @@ package appcpanama.logicstudio.net.appcpanama.JavaBeans;
 public class infoAnimalBeans {
 
     String nombre;
-
     Integer img;
     Integer imgMenu;
     String nombreCientifico;
     String rutaHtml;
+    Integer codigoAnimal;
 
+    public Integer getCodigoAnimal() {
+        return codigoAnimal;
+    }
+
+    public void setCodigoAnimal(Integer codigoAnimal) {
+        this.codigoAnimal = codigoAnimal;
+    }
     public String getRutaHtml() {
         return rutaHtml;
     }
@@ -41,13 +48,14 @@ public class infoAnimalBeans {
         this.nombre = nombre;
     }
 
-    public infoAnimalBeans(String nombre, Integer img, Integer imgMenu, String nombreCientifico, String rutaHtml)
+    public infoAnimalBeans(String nombre, Integer img, Integer imgMenu, String nombreCientifico, String rutaHtml, Integer codigoAnimal)
     {
         this.nombre = nombre;
         this.img=img;
         this.imgMenu = imgMenu;
         this.nombreCientifico=nombreCientifico;
         this.rutaHtml = rutaHtml;
+        this.codigoAnimal = codigoAnimal;
     }
 
     public String getNombre() {

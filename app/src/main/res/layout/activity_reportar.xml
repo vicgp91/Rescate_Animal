@@ -119,6 +119,15 @@
                     android:visibility="gone"
                     android:textSize="15sp" />
 
+                <TextView
+                    android:id="@+id/codigoAnimal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
+                    android:textSize="15sp" />
+
             </LinearLayout>
 
 
@@ -164,6 +173,15 @@
                     android:layout_weight="1"
                     android:gravity="center|center_vertical"
                     android:textColor="@color/colorPrimary"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/codigoCondicion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textColor="@color/colorPrimary"
+                    android:visibility="gone"
                     android:textSize="15sp" />
 
             </LinearLayout>

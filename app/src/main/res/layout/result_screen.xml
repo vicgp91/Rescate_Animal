@@ -38,13 +38,14 @@
 
 
             <TextView
+                android:id="@+id/idnombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="@string/nombreTest"
+                android:text=""
                 android:textColor="@color/colorBlackGray"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -137,6 +138,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/idhuellas"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:singleLine="true"

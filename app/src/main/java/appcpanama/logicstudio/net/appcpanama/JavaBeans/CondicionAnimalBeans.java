@@ -7,6 +7,16 @@ package appcpanama.logicstudio.net.appcpanama.JavaBeans;
 public class CondicionAnimalBeans {
 
     String nombre;
+    Integer codigoCondicion;
+
+    public void setCodigoCondicion(Integer codigoCondicion) {
+        this.codigoCondicion = codigoCondicion;
+    }
+
+    public Integer getCodigoCondicion() {
+        return codigoCondicion;
+    }
+
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -16,9 +26,10 @@ public class CondicionAnimalBeans {
         return nombre;
     }
 
-    public CondicionAnimalBeans(String nombre)
+    public CondicionAnimalBeans(String nombre, Integer codigoCondicion)
     {
         this.nombre = nombre;
+        this.codigoCondicion = codigoCondicion;
 
     }
 
