@@ -1,4 +1,7 @@
 <?php
+
+
+
 if(isset($_POST['codigo'])  ){
 	$code = $_POST['codigo'];
 	switch($code){
@@ -13,7 +16,10 @@ if(isset($_POST['codigo'])  ){
 			break;
 		case 4:
 			updateAcc();
-			break();
+			break;
+		case 5:
+			updatePass();
+			break;
 		default:
 			echo "No  code method found";
 			break ;
@@ -26,10 +32,59 @@ function Conn(){
 }
 
 
-function updateAcc(){
-if(isset($_POST['nombre'])  && isset($_POST['correo']) && isset($_POST['id']) && isset($_POST['telefono'])) {
+function updatePass(){
+
+if(isset($_POST['passactual'])  && isset($_POST['passn']) && isset($_POST['passnr']) && isset($_POST['id'])) {
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Content-type: application/json');
+	$id = $_POST['id'];
+	$passn = $_POST['passn'];
+	$passnr = $_POST['passnr'];
+	$passactual = $_POST['passactual'];
+	$link= Conn();
+	mysqli_set_charset($link,'utf8');
+	$sql = "SELECT user_pass FROM res_app_user WHERE user_id =?";
+	$stmt = $link->prepare($sql);
+	$stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->bind_result($user_pass);
+	$stmt->fetch();
+ 	if ($stmt->errno) {
+        $result_json = array(
+                'error' => $stmt->error
+            );
+            $stmt->close();
+ 	}else{
+ 	$stmt->close();
+ 	if ($passn == $passnr && $passactual ==  $user_pass){
+ 		$sql  = "UPDATE res_app_user SET  user_pass = ? ,date_updated= now()
+         where user_id= ?";
+        $stmt = $link->prepare($sql);
+        $stmt->bind_param("si",$passn,  $id);
+        $stmt->execute();
+		if ($stmt->errno) {
+            $result_json = array(
+                'error' => $stmt->error
+            );
+            $stmt->close();
+        } else {
+            $result_json = array(
+                'error' => ''
+            );
+            $stmt->close();
+        }
+ 	}else{
+            $result_json = array(
+                'error' => 'Paramentros enviados no cumplen'
+            );
+
+ 	}
 
 
+ 	}
+ 	echo json_encode($result_json);	
+ 	mysqli_close($link);
 
 }
 
@@ -73,7 +128,7 @@ if(isset($_POST['nombre'])  && isset($_POST['correo']) && isset($_POST['pass']) 
             $stmt->close();
         }
 	}
- 		echo json_encode($result_json);	
+ 	echo json_encode($result_json);	
 
 mysqli_close($link);
 
@@ -171,4 +226,47 @@ if ($stmt = $link->prepare("SELECT  id, user_id  FROM  ost_user_email WHERE LOWE
 	echo "no data send";
 }
 }
+
+
+
+function updateAcc(){
+if(isset($_POST['nombre'])  && isset($_POST['correo']) && isset($_POST['id']) && isset($_POST['telefono'])) {
+	header('Cache-Control: no-cache, must-revalidate');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Content-type: application/json');
+	$id= $_POST['id'];
+	$nombre = $_POST['nombre'];
+	$correo = $_POST['correo'];
+	$tel = $_POST['telefono'];
+	$link= Conn();
+	mysqli_set_charset($link, 'utf8');
+    $sql  = "CALL transaction_sp_updateUser(?,?,?,?)";
+    $stmt = $link->prepare($sql);
+    $stmt->bind_param('isss', $id, $correo, $nombre, $tel);
+    $stmt->execute();
+    $stmt->bind_result($p_message);
+	$stmt->fetch();	
+	if (isset ($p_message)){
+            $result_json = array(
+                'error' => $p_message
+            );
+    }else{
+       if ($stmt->errno) {
+            $result_json = array(
+                'error' => $stmt->error
+            );
+            $stmt->close();
+        } else {
+
+        	$result_json = array('id'=>$id,  'name' => $nombre, 'phone_user' => $tel, 'correo' => $correo, 'error' => '' );
+       
+            $stmt->close();
+        }
+	}
+
+mysqli_close($link);
+echo json_encode($result_json);	
+}
+}
+
 ?>
