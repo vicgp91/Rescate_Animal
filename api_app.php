@@ -103,8 +103,9 @@ if(isset($_POST['nombre'])  && isset($_POST['correo']) && isset($_POST['pass']) 
 	$pass = $_POST['pass'];
 	$lat = $_POST['latitud'];
 	$long = $_POST['longitud'];
-	mysqli_set_charset($link, 'utf8');
 	$link= Conn();
+	mysqli_set_charset($link, 'utf8');
+
     $sql  = "CALL transaction_sp_createuser(?,?,?,?,?,?, ?,?)";
     $stmt = $link->prepare($sql);
     $stmt->bind_param('ssssddis', $correo, $pass, $nombre, $tel,$lat, $long, $id,$er);
